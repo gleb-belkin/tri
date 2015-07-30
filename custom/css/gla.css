@@ -1,0 +1,156 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Author     : Gleb Belkin <gleb.belkin@outlook.com>
+*/
+
+.rule1StationaryBlockLogicalOperandElement {
+    padding:5px;
+    margin:5px 0 5px 0;
+    width: 30px;
+    border: 1px solid black;
+    text-align: center;
+}
+.rule2CorrBlockLogicalOperandElement {
+    padding:5px;
+}
+
+#selectCorrPopup input{
+    width: 300px;
+}
+
+
+.corrObjectContainerElement {
+    background-color: #ccccff;
+    margin:2px;
+    padding: 2px; 
+    cursor:pointer;
+}
+
+
+#ruleBlock3FormBlocks input {
+    width: 200px;
+}
+
+#ruleBlock3FormBlocks:after {
+    content: ".";
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+}
+
+#ruleBlock3FormBlocks #inputFieldLabel {
+    float: left;
+}
+#ruleBlock3FormBlocks #inputField {
+    float: left;
+}
+#ruleTypeMenuTemplate{
+    width: 300px;
+}
+
+#glaHistoryLinkContainer {
+    text-align: left;
+    vertical-align: middle;
+    margin-left: 10px;
+    padding-top: 5px;
+}
+
+#glaActions {
+    //
+}
+
+#ruleBlock3 #inputFieldLabel {
+    padding-top: 3px;
+    padding-right: 20px;
+}
+
+#ruleTypeSelectorContainer {
+    //
+}
+
+.inputLabel {
+    margin-right: 5px;
+    float: left;
+}
+
+#ruleBlock1GeneralExceptionCheckboxContainer > div {
+    float: left;
+}
+
+#ruleBlock1GeneralExceptionCheckboxContainer:after {
+    content: ".";
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+}
+
+#ruleBlock2GeneralExceptionCheckboxContainer > div {
+    float: left;
+}
+
+#ruleBlock2GeneralExceptionCheckboxContainer:after {
+    content: ".";
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+}
+
+#glaControlElements{
+    display: none;
+}
+#glaControlElementsContainer > div {
+    float: left;
+}
+
+#glaControlElementsContainer:after {
+    content: ".";
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+}
+#removeCorrBlockButtonContainer {
+    float:right;
+    width: 30px;
+    margin-right: 5px;
+}
+
+#removeCorrBlockButtonContainer:after {
+    content: ".";
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+}
+
+#corrObjectsContainer { 
+    height:80px;
+    margin-top: 10px;
+    overflow-y:auto;
+}
+
+.stationaryElementBlock
+{
+    background-color: #ccccff;
+    padding: 5px;
+}
+.corrElementBlock
+{
+    margin-bottom: 10px;
+    background-color: #ccccff;
+    padding: 5px;
+}
+
+.exceptionConditionsBlock {
+    display: none;
+}
+.conditionsBlock {
+    display: none;
+}

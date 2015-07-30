@@ -1,0 +1,65 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Author     : Gleb Belkin <gleb.belkin@outlook.com>
+*/
+
+/*Reconciliation rules block*/
+
+.recRulesBlockElement {
+    background-color: #ccccff;
+    margin:2px;
+    padding: 2px;
+    cursor:pointer;
+}
+
+#relativeWeight input {
+    width: 50px;
+}
+
+/*Reconciliation rule popup*/
+
+#addRecRulePopup {
+    padding-bottom: 10px;
+}
+
+/*#addRecRulePopup #headerBlock{
+    margin: 11px 0 0 0;
+}*/
+
+#addRecRulePopup > div{
+    margin: 10px 0 0 0;
+}
+
+#addRecRulePopup #headerBlock:after {
+    content: ".";
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+}
+
+#addRecRulePopup #headerText {
+    float: left;
+}
+
+#addRecRulePopup #headerText p {
+    margin: 0 0 0 0;
+}
+
+#addRecRulePopup #recHistoryLinkContainer {
+    float: right;
+}
+
+/*#recRuleNameInputContainer {
+    margin: 20px 0 20px 0;
+}*/
+
+#recRuleNameInputContainer input{
+    width: 200px;
+}
+
+

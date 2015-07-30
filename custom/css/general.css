@@ -1,0 +1,201 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Author     : Gleb Belkin <gleb.belkin@outlook.com>
+*/
+
+
+body {
+    font: 62.5% "Trebuchet MS", sans-serif;
+    margin: 20px;
+}
+select {
+    width: 200px;
+}
+
+.formBlock {
+    margin-bottom: 10px;
+}
+
+.formBlockHeader {
+    background-color: #e0e0e0;
+    padding: 6px 0 6px 6px;
+    color: #992815;
+    font-weight: 300;
+}
+
+.formBlockContent {
+    background-color: #f2f2f2;
+    padding: 6px 0 6px 6px;
+}
+
+.ruleBlock {
+    display: none;
+}
+
+.exceptionBlock {
+    margin-bottom: 10px;
+    background-color: #dddddd;
+    padding: 5px;
+}
+
+#logoutButtonContainer > button {
+    float: right;
+}
+
+#logoutButtonContainer:after {
+    content: ".";
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+}
+
+#generalLayout {
+    display: none;
+}
+
+#lockScreenMessage {
+    display: none;
+}
+
+.propertySelectorOverflow {
+    max-height:160px;
+}
+.operandSelectorOverflow {
+    max-height:80px;
+}
+.inputFieldOverflow {
+    max-height:80px;
+}
+
+#messagePopup p {
+    text-align: center;
+}
+
+#leftBracketButton button, #rightBracketButton button{
+    height: 20px;
+}
+
+#rulesTableFieldSelectorHeader, #rulesTableInputValueHeader{
+    padding-left: 5px;
+}
+
+#tracePanelContainer {
+    display: none;
+}
+
+#ruleHistoryElementsContainer { 
+    height:200px;
+    overflow-y:auto;
+}
+
+#ruleHistoryPopup {
+    //
+}
+
+.ruleHistoryElement {
+    background-color: #ccccff;
+    margin:2px;
+    padding: 2px;
+}
+
+.ruleHistoryElement p{
+    //
+}
+
+#controlChecboxContainer > div {
+    float: left;
+}
+
+#controlChecboxContainer:after {
+    content: ".";
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+}
+
+#controlCheckboxLabel {
+    padding-top: 3px;
+}
+
+#controlCheckboxLabel:after {
+    content: ".";
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+}
+
+
+.invalidInput {
+    border: 1px solid red;
+}
+
+
+#confirmActionPopupErrorPanel {
+    //
+}
+
+.errorPanel{
+    padding: 3px 3px 3px 3px;
+    color: #f00;
+}
+
+#lockScreenMessage {
+    background-color: #ffffff;
+    text-align: center;
+    border: 1px solid #cccccc;
+}
+
+.no-close .ui-dialog-titlebar-close {
+    display: none;
+}
+
+.no-close .ui-dialog-titlebar {
+    display: none;
+}
+#logicalOperandsMenuTemplate {
+    width: 100px; 
+}
+#bracketMenuTemplate {
+    width: 30px;
+}
+#interfaceTemplates {
+    display: none;
+}
+
+#menuTemplates {
+    display: none;
+}
+
+
+
+.ruleElement {
+    float: left;
+    padding: 0 3px 0 3px;
+}
+
+/*todo use this with every checkbox*/
+
+.checkboxContainer > div {
+    float: left;
+}
+
+.checkboxContainer > div + div {
+    padding-top: 3px;
+}
+
+.checkboxContainer:after {
+    content: ".";
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+}
+
+

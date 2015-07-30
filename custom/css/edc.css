@@ -1,0 +1,85 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Author     : Gleb Belkin <gleb.belkin@outlook.com>
+*/
+
+/*Incident type menu*/
+
+.incidentTypeBlack {
+    color: #000000;
+}
+.incidentTypeBlue {
+    color: #0000cc;
+}
+.incidentTypeRed {
+    color: #ff0000;
+}
+.incidentTypeGrey {
+    color: #cccccc;
+}
+
+#incidentTypeMenuTemplate {
+    width: 150px;
+}
+#incidentTypeMenuTemplate > li li{
+    width: 150px;
+}
+
+/*EDC rules block*/
+
+.edcRulesBlockElement {
+    background-color: #ccccff;
+    margin:2px;
+    padding: 2px;
+    cursor:pointer;
+}
+
+/*EDC rule popup*/
+
+#addEdcRulePopup {
+    padding-bottom: 10px;
+}
+
+#addEdcRulePopup #headerBlock{
+    margin: 11px 0 0 0;
+}
+
+#addEdcRulePopup #headerBlock:after {
+    content: ".";
+    visibility: hidden; 
+    display: block; 
+    height: 0; 
+    clear: both;
+}
+
+#addEdcRulePopup #headerText {
+    float: left;
+}
+
+#addEdcRulePopup #headerText p {
+    margin: 0 0 0 0;
+}
+
+#addEdcRulePopup #edcHistoryLinkContainer {
+    float: right;
+}
+
+#inputField input {
+    width: 195px;
+}
+
+#edcRuleNameInputContainer {
+    margin: 20px 0 20px 0;
+}
+
+#edcRuleNameInputContainer input{
+    width: 200px;
+}
+
+
+
+

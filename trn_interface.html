@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="custom/lib/jquery-ui/jquery-ui.css" rel="stylesheet">
+    <link rel="stylesheet" href="custom/css/tri.css">
+</head>
+<body>
+<div id="generalLayout">
+    <div id="logoutButtonContainer">
+        <button></button>
+    </div>
+    <div id="processTabs">
+        <ul>
+            <li><a href="#processTabs-1"></a></li>
+            <li><a href="#processTabs-2"></a></li>
+            <li><a href="#processTabs-3"></a></li>
+        </ul>
+        <div id="processTabs-1">
+            <div id="edcTab">
+                <div id="addRuleButtonContainer" class="formBlock">
+                    <button></button>
+                </div>
+                <div id="edcRulesBlock">
+                    <div class="formBlockHeader"></div>
+                    <div id="edcRulesContainer" class="formBlockContent">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="processTabs-2">
+            <div id="glaTab">
+                <div id="ruleTypeSelectorBlock">
+                    <div class="formBlockHeader"></div>
+                    <div class="formBlockContent">
+                        <div id="ruleTypeSelectorContainer">
+                            <div class="inputLabel"></div>
+                            <div id="ruleTypeInput">
+                                <a href="#" id="ruleTypeSelector"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="glaControlElements" class="formBlock">
+                    <div id="glaControlElementsContainer" class="formBlockContent">
+                        <div id="glaActions">
+                            <button id="save"></button>
+                        </div>
+                        <div id="glaHistoryLinkContainer" class="formBlock">
+                            <a href="#"></a>
+                        </div>
+                    </div>
+                    <div id="glaRulesErrorPanel" class="errorPanel"></div>
+                </div>
+                <div id="ruleBlock1" class="ruleBlock">
+                    <div class="formBlockHeader"></div>
+                    <div id="ruleBlock1FormBlocks" class="formBlockContent">
+                        <div id="ruleBlock1GeneralExceptionBlock" class="exceptionBlock">
+                            <div id="ruleBlock1GeneralExceptionCheckboxContainer">
+                                <div><input type="checkbox"></div>
+                                <div id="controlCheckboxLabel"></div>
+                            </div>
+                            <div id="ruleBlock1GeneralExceptionConditionsBlock" class="exceptionConditionsBlock">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="ruleBlock2" class="ruleBlock">
+                    <div class="formBlockHeader"></div>
+                    <div id="ruleBlock2FormBlocks" class="formBlockContent">
+                        <div id="ruleBlock2GeneralExceptionBlock" class="exceptionBlock">
+                            <div id="ruleBlock2GeneralExceptionCheckboxContainer">
+                                <div><input type="checkbox"></div>
+                                <div id="controlCheckboxLabel"></div>
+                            </div>
+                            <div id="ruleBlock2GeneralExceptionConditionsBlock" class="exceptionConditionsBlock">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="formBlocksControlButton" class="formBlockContent">
+                        <button id="addCorrButton"></button>
+                    </div>
+                </div>
+                <div id="ruleBlock3" class="ruleBlock">
+                    <div class="formBlockHeader"></div>
+                    <div id="ruleBlock3FormBlocks" class="formBlockContent">
+                        <div id="inputFieldLabel"></div>
+                        <div id="inputField">
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+                <!--</form>-->
+            </div>
+        </div>
+        <div id="processTabs-3">
+            <div id="recTab"></div>
+            <div id="addRecRuleButtonContainer" class="formBlock">
+                <button></button>
+            </div>
+            <div id="recRulesSearchHeader"></div>
+            <div id="recRulesBlock">
+                <div class="formBlockHeader"></div>
+                <div id="recRulesContainer" class="formBlockContent">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="tracePanelContainer">
+    <div id="tracePanel"></div>
+    <div id="clearTracePanelButtonContainer">
+        <button>Clear trace panel</button>
+    </div>
+</div>
+<!--
+Templates
+-->
+<div id="lockScreenMessage">
+    <img src="custom/img/ajax-loader.gif">
+</div>
+<div id="messagePopup">
+    <p></p>
+</div>
+<div id="interfaceTemplates">
+    <!--General-->
+    <!--Blocks-->
+    <div id="controlCheckboxBlockTemplate">
+        <div class="checkboxContainer">
+            <div><input type="checkbox"></div>
+            <div></div>
+        </div>
+    </div>
+    <div id="conditionsBlockTemplate">
+        <div></div>
+        <div>
+            <table id="rulesTable">
+                <tr id="rulesTableHeader">
+                    <td>
+                    </td>
+                    <td id="rulesTableFieldSelectorHeader">
+                    </td>
+                    <td>
+                    </td>
+                    <td id="rulesTableInputValueHeader">
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="addConditionButtonContainer">
+            <button id="addConditionButton"></button>
+        </div>
+    </div>
+    <div id="ruleTemplate">
+        <table>
+            <tr>
+                <td>
+                    <div class="ruleElement" id="leftBracketButton" style="margin-top: -2px">
+                        <button>(</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="ruleElement" id="propertySelector">
+                        <select id="selectField"></select>
+                    </div>
+                </td>
+                <td>
+                    <div class="ruleElement" id="operandSelector">
+                        <select></select>
+                    </div>
+                </td>
+                <td>
+                    <div class="ruleElement" id="inputField">
+                    </div>
+                </td>
+                <td>
+
+                    <div class="ruleElement" id="rightBracketButton">
+                        <button>)</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="ruleElement" id="operandButton">
+                        <button></button>
+                    </div>
+                </td>
+                <td>
+                    <div class="ruleElement">
+                        <button id="remove"></button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--Popups-->
+    <div id="ruleHistoryPopup">
+        <p></p>
+
+        <div id="ruleHistoryElementsContainer"></div>
+    </div>
+    <div id="confirmActionPopup">
+        <p></p>
+
+        <div id="commentInputContainer">
+            <textarea rows="10" cols="45" name="comment"></textarea>
+        </div>
+        <div id="confirmActionPopupErrorPanel" class="errorPanel"></div>
+    </div>
+    <!--EDC-->
+    <!--Blocks-->
+    <!--Popups-->
+    <div id="addEdcRulePopup">
+
+        <div id="headerBlock">
+
+            <div id="headerText">
+                <p></p>
+            </div>
+            <div id="edcHistoryLinkContainer">
+                <a href="#"></a>
+            </div>
+        </div>
+        <div id="edcRuleNameInputContainer">
+            <input type="text">
+        </div>
+        <div id="incidentTypeInput">
+            <a href="#" id="incidentTypeSelector"></a>
+        </div>
+        <div id="conditionsBlock">
+        </div>
+        <div id="confirmActionPopupErrorPanel" class="errorPanel"></div>
+    </div>
+    <!--GLA -->
+    <!--Blocks-->
+    <div id="rule1BlockStationaryElementTemplate">
+        <div class="stationaryElementBlock">
+            <div id="controlChecboxContainer">
+                <div><input type="checkbox"></div>
+                <div id="controlCheckboxLabel"></div>
+            </div>
+            <div id="conditionsBlock" class="conditionsBlock">
+            </div>
+        </div>
+    </div>
+    <div id="rule2BlockCorrElementTemplate" style="display: none">
+        <div class="corrElementBlock">
+            <div id="removeCorrBlockButtonContainer">
+                <button></button>
+            </div>
+            <div id="corrBlockLabel">
+            </div>
+            <div id="controlChecboxContainer">
+                <div><input type="checkbox"></div>
+                <div id="controlCheckboxLabel"></div>
+            </div>
+            <div id="conditionsBlock" class="conditionsBlock">
+            </div>
+        </div>
+    </div>
+    <!--Popups-->
+    <div id="selectCorrPopup">
+        <p></p>
+        <input id="corrSearch" type="text">
+
+        <div id="corrObjectsContainer">
+        </div>
+    </div>
+    <!--Rec-->
+    <!--Blocks-->
+    <div id="recConditionsBlockTemplate">
+        <div></div>
+        <div>
+            <table id="rulesTable">
+                <tr id="rulesTableHeader">
+                    <!--<td>
+                    </td>-->
+                    <td id="rulesTableFieldSelectorHeader">
+                    </td>
+                    <td>
+                    </td>
+                    <td id="rulesTableInputValueHeader">
+                    </td>
+                    <!--<td>
+                    </td>
+                    <td>
+                    </td>-->
+                    <td>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="addConditionButtonContainer">
+            <button id="addConditionButton"></button>
+        </div>
+    </div>
+    <div id="recRuleTemplate">
+        <table>
+            <tr>
+                <!--<td>
+                    <div class="ruleElement" id="leftBracketButton" style="margin-top: -2px">
+                        <button>(</button>
+                    </div>
+                </td>-->
+                <td>
+                    <div class="ruleElement" id="trnPropertySelector">
+                        <select id="selectTrnField"></select>
+                    </div>
+                </td>
+                <td>
+                    <div class="ruleElement" id="operandSelector">
+                        <select></select>
+                    </div>
+                </td>
+                <td>
+                    <div class="ruleElement" id="evtPropertySelector">
+                        <select id="selectEvtField"></select>
+                    </div>
+                </td>
+                <!--<td>
+                    <div class="ruleElement" id="rightBracketButton">
+                        <button>)</button>
+                    </div>
+                </td>-->
+                <td>
+                    <div class="ruleElement" id="relativeWeight">
+                        <input type="text">
+                    </div>
+                </td>
+                <!--<td>
+                    <div class="ruleElement" id="operandButton">
+                        <button></button>
+                    </div>
+                </td>-->
+                <td>
+                    <div class="ruleElement">
+                        <button id="remove"></button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--Popups-->
+    <div id="addRecRulePopup">
+        <div id="headerBlock">
+            <div id="headerText">
+                <p></p>
+            </div>
+            <div id="recHistoryLinkContainer">
+                <a href="#"></a>
+            </div>
+        </div>
+        <div id="recRuleNameInputContainer">
+            <input type="text">
+        </div>
+        <div>
+            <div id="addRecRulePopupRecConditions">
+            </div>
+        </div>
+        <div>
+            <div id="addRecRulePopupTrnExceptionConditions">
+            </div>
+        </div>
+        <div>
+            <div id="addRecRulePopupEvtExceptionConditions">
+            </div>
+        </div>
+        <div id="confirmActionPopupErrorPanel" class="errorPanel"></div>
+    </div>
+    <!--            <div id="ruleHistoryPopup">
+                    <p></p>
+                    <div id="ruleHistoryElementsContainer"></div>
+                </div>
+                <div id="confirmActionPopup">
+                    <p></p>
+                    <div id="commentInputContainer">
+                        <textarea rows="10" cols="45" name="comment"></textarea>
+                    </div>
+                    <div id="confirmActionPopupErrorPanel" class="errorPanel"></div>
+                </div>-->
+</div>
+<div id="menuTemplates">
+    <!--General-->
+    <ul id="logicalOperandsMenuTemplate">
+    </ul>
+    <ul id="bracketMenuTemplate">
+    </ul>
+    <!--EDC-->
+    <ul id="incidentTypeMenuTemplate">
+    </ul>
+    <!--GLA-->
+    <ul id="ruleTypeMenuTemplate">
+    </ul>
+</div>
+<script src="custom/lib/kitcambridge.be/json3.min.js"></script>
+<script src="custom/lib/jquery/jquery-1.11.2.js"></script>
+<script src="custom/lib/jquery-ui/jquery-ui.js"></script>
+<script src="custom/js/tri.js"></script>
+</body>
+</html>
