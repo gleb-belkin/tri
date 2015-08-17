@@ -16,14 +16,18 @@ var initialRecRuleData = {
     "lbl": '', "cnds": [
         {"tfid": 1, "oid": 5, "efid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rw": 0, "rdo": 0, "rqr": 0}
     ],
-    "trnExceptions": [
-        {"fid": 1, "oid": 5, "iv": "123", "ivid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rdo": 0, "rqr": 0}
-    ],
-    "evtExceptions": [
-        {"fid": 1, "oid": 5, "iv": "123", "ivid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rdo": 0, "rqr": 0}
-    ],
-    "etl_from": "30",
-    "etl_to": "60"
+    "trnExceptions": {
+        "end": 0, "cnds": [
+            {"fid": 1, "oid": 5, "iv": "123", "ivid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rdo": 0, "rqr": 0}
+        ]
+    },
+    "evtExceptions": {
+        "end": 0, "cnds": [
+            {"fid": 1, "oid": 5, "iv": "123", "ivid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rdo": 0, "rqr": 0}
+        ]
+    },
+    "etl_from": "10",
+    "etl_to": "50"
 };
 
 var initialRecConditionData = {
@@ -248,6 +252,21 @@ function createAddRecRulePopup() {
     evtExceptionConditionsBlock.html($('#conditionsBlockTemplate').html());
     evtExceptionConditionsBlock.prev().children().eq(1).html(languageConstants.rec.addRecRulePopup.evtExceptionSectionHeader);
     initCheckbox(evtExceptionConditionsBlock.prev().find("input"), evtExceptionConditionsBlock);
+    //
+    var matchLevelSettingBlock = $("#addRecRulePopupMatchLevelSettingsBlock");
+    matchLevelSettingBlock.children().first().children().first().html(languageConstants.rec.addRecRulePopup.matchLevelSettingsBlockEtlFromLabel);
+    matchLevelSettingBlock.children().first().children().eq(2).html(languageConstants.rec.addRecRulePopup.matchLevelSettingsBlockEtlToLabel);
+    var etlFromInput = $("input", matchLevelSettingBlock.children().first()).first();
+    etlFromInput.prop('maxlength', 2);
+    etlFromInput.keydown(inputNumberFilter);
+    var etlToInput = $("input", matchLevelSettingBlock.children().first()).eq(1);
+    etlToInput.prop('maxlength', 2);
+    var fimFromInput = $("input", matchLevelSettingBlock.children().eq(1));
+    etlToInput.keyup(function () {
+        fimFromInput.val(etlToInput.val());
+    }).keydown(inputNumberFilter).prop('maxlength', 2);
+    matchLevelSettingBlock.children().eq(1).children().first().html(languageConstants.rec.addRecRulePopup.matchLevelSettingsBlockFimFromLabel);
+    fimFromInput.prop('disabled', true);
 }
 
 /**
@@ -298,19 +317,36 @@ function initAddRecRulePopup(recRuleData) {
         addRecCondition(recConditionsTable, recRuleData.cnds[i]);
     }
     //
-    var trnExceptionTable = $('#addRecRulePopupTrnExceptionConditions', addRecRulePopup).children().eq(1).children().first();
+    var trnExceptionConditionsBlock = $("#addRecRulePopupTrnExceptionConditions", addRecRulePopup);
+    var trnCheckbox = trnExceptionConditionsBlock.prev().find("input");
+    trnCheckbox.prop('checked', recRuleData.trnExceptions.end === 1);
+    trnCheckbox.trigger('change');
+    var trnExceptionTable = trnExceptionConditionsBlock.children().eq(1).children().first();
     trnExceptionTable.data('rules', []);
     initAddConditionButton($("#addRecRulePopupTrnExceptionConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.edc);
-    for (var i = 0, max = recRuleData.trnExceptions.length; i < max; i++) {
-        addCondition(trnExceptionTable, recRuleData.trnExceptions[i]);
+    for (var i = 0, max = recRuleData.trnExceptions.cnds.length; i < max; i++) {
+        addCondition(trnExceptionTable, recRuleData.trnExceptions.cnds[i]);
     }
     //
-    var evtExceptionTable = $('#addRecRulePopupEvtExceptionConditions', addRecRulePopup).children().eq(1).children().first();
+    var evtExceptionConditionsBlock = $("#addRecRulePopupEvtExceptionConditions", addRecRulePopup);
+    var evtCheckbox = evtExceptionConditionsBlock.prev().find("input");
+    evtCheckbox.prop('checked', recRuleData.evtExceptions.end === 1);
+    evtCheckbox.trigger('change');
+    var evtExceptionTable = evtExceptionConditionsBlock.children().eq(1).children().first();
     evtExceptionTable.data('rules', []);
     initAddConditionButton($("#addRecRulePopupEvtExceptionConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.edc);
-    for (var i = 0, max = recRuleData.evtExceptions.length; i < max; i++) {
-        addCondition(evtExceptionTable, recRuleData.evtExceptions[i]);
+    for (var i = 0, max = recRuleData.evtExceptions.cnds.length; i < max; i++) {
+        addCondition(evtExceptionTable, recRuleData.evtExceptions.cnds[i]);
     }
+    //
+    var matchLevelSettingBlock = $("#addRecRulePopupMatchLevelSettingsBlock");
+    matchLevelSettingBlock.children().first().children().first().html(languageConstants.rec.addRecRulePopup.matchLevelSettingsBlockEtlFromLabel);
+    matchLevelSettingBlock.children().first().children().eq(2).html(languageConstants.rec.addRecRulePopup.matchLevelSettingsBlockEtlToLabel);
+    //var etlToInput = $("input",matchLevelSettingBlock.children().first()).eq(1).css("border", "1px solid red");
+    $("input", matchLevelSettingBlock.children().first()).first().val(recRuleData.etl_from);
+    var etlToInput = $("input", matchLevelSettingBlock.children().first()).eq(1);
+    etlToInput.val(recRuleData.etl_to);
+    etlToInput.trigger('keyup');
     //
     addRecRulePopup.dialog("option", "title", popupTitle);
     addRecRulePopup.dialog('option', 'buttons', popupButtonsArray);

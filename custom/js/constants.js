@@ -160,6 +160,9 @@ var languageConstants = {
             cancelButtonLabel: 'Отменить',
             requiredFieldsNote: 'Пожалуйста, заполните все обязательные поля.',
             fieldsFormatNote: 'Пожалуйста, проверьте формат ввода выделенных полей.',
+            matchLevelSettingsBlockEtlFromLabel: 'Предполагаемая связь: от',
+            matchLevelSettingsBlockEtlToLabel: 'до',
+            matchLevelSettingsBlockFimFromLabel: 'Финансовое последствие: от'
         }
     },
     templates: {

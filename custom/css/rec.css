@@ -62,4 +62,30 @@ and open the template in the editor.
     width: 200px;
 }
 
+#addRecRulePopupMatchLevelSettingsBlock > div > div{
+    float: left;
+}
+
+#addRecRulePopupMatchLevelSettingsBlock> div:after {
+    content: ".";
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+}
+
+#addRecRulePopupMatchLevelSettingsBlock input{
+    width: 20px;
+}
+
+#addRecRulePopupMatchLevelSettingsBlock > div:first-child{
+    margin: 0 0 10px 0;
+}
+
+#addRecRulePopupMatchLevelSettingsBlock input{
+    margin: 0 5px 0 5px;
+}
+
+
+
 
