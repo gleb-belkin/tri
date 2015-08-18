@@ -5,6 +5,7 @@
 /**
  * Comment
  */
+//todo: add parameters and success callback
 function loadIncidentTypeData() {
     $.ajax({
         type: "POST",
@@ -30,6 +31,7 @@ function loadIncidentTypeData() {
 /**
  * Comment
  */
+//todo: add parameters and success callback
 function loadRulesData() {
     $.ajax({
         type: "POST",
@@ -81,6 +83,7 @@ function loadRulesData() {
  * Saves rule to server.
  * @param {object} ruleType - Rule type: rule or draft.
  */
+//todo: add parameters and success callback
 function saveRule(ruleType) {
     lockScreen();
     var ruleData = getRuleData(ruleType);
@@ -175,6 +178,7 @@ function saveRule(ruleType) {
 /**
  * Removes rule.
  */
+//todo: add parameters and success callback
 function removeRule() {
     lockScreen();
     $.ajax({
@@ -202,6 +206,7 @@ function removeRule() {
 /**
  * Logs user out.
  */
+//todo: add success callback
 function logout() {
     lockScreen();
     $.ajax({
@@ -226,6 +231,7 @@ function logout() {
 /**
  * Removes rule.
  */
+//todo: add success callback
 function getDropdownList(listId) {
     lockScreen();
     var result;
@@ -297,6 +303,7 @@ function showRecRule(ruleId, successCallback) {
 /**
  * Requests rule history from the backend and displays it in the rule history popup.
  */
+//todo: add parameters and success callback
 function showRuleHistory() {
     var incidentTypeId = -1;
     switch (activeRuleProcessType) {

@@ -11,9 +11,9 @@ and open the template in the editor.
 
 .recRulesBlockElement {
     background-color: #ccccff;
-    margin:2px;
+    margin: 2px;
     padding: 2px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 #relativeWeight input {
@@ -30,15 +30,15 @@ and open the template in the editor.
     margin: 11px 0 0 0;
 }*/
 
-#addRecRulePopup > div{
+#addRecRulePopup > div {
     margin: 10px 0 0 0;
 }
 
 #addRecRulePopup #headerBlock:after {
     content: ".";
-    visibility: hidden; 
-    display: block; 
-    height: 0; 
+    visibility: hidden;
+    display: block;
+    height: 0;
     clear: both;
 }
 
@@ -58,15 +58,15 @@ and open the template in the editor.
     margin: 20px 0 20px 0;
 }*/
 
-#recRuleNameInputContainer input{
+#recRuleNameInputContainer input {
     width: 200px;
 }
 
-#addRecRulePopupMatchLevelSettingsBlock > div > div{
+#addRecRulePopupMatchLevelSettingsBlock > div > div {
     float: left;
 }
 
-#addRecRulePopupMatchLevelSettingsBlock> div:after {
+#addRecRulePopupMatchLevelSettingsBlock > div:after {
     content: ".";
     visibility: hidden;
     display: block;
@@ -74,18 +74,42 @@ and open the template in the editor.
     clear: both;
 }
 
-#addRecRulePopupMatchLevelSettingsBlock input{
+#addRecRulePopupMatchLevelSettingsBlock input {
     width: 20px;
 }
 
-#addRecRulePopupMatchLevelSettingsBlock > div:first-child{
+#addRecRulePopupMatchLevelSettingsBlock > div:first-child {
     margin: 0 0 10px 0;
 }
 
-#addRecRulePopupMatchLevelSettingsBlock input{
+#addRecRulePopupMatchLevelSettingsBlock input {
     margin: 0 5px 0 5px;
 }
 
+#recRulesContainer {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+#recRulesSearchBlock > div {
+    float: left;
+}
+
+#recRulesSearchBlock:after {
+    content: ".";
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+}
+
+#recRulesSearchBlock input {
+    margin: 0 5px 0 5px;
+}
+
+#recRulesSearchBlock {
+    margin: 10px 0 10px 0;
+}
 
 
 

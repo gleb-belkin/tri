@@ -148,7 +148,8 @@ function resetAddEdcRulePopup(resetLevel) {
         return;
     }
     $('#ruleNameInputContainer').find('input').val('');
-    $("#conditionsBlock", addEdcRulePopup).html($('#conditionsBlockTemplate').html());
+    initFieldToValueConditionsBlock($("#conditionsBlock", addEdcRulePopup),conditionsBlockConstants.trn);
+    //$("#conditionsBlock", addEdcRulePopup).html($('#conditionsBlockTemplate').html());
 }
 /**
  * Comment

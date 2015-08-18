@@ -198,7 +198,8 @@ function initRule1Block() {
  */
 function initBlock1GeneralExceptionConditionsBlock(blockData) {
     var exceptionBlock = $('#ruleBlock1GeneralExceptionConditionsBlock');
-    exceptionBlock.html($('#conditionsBlockTemplate').html());
+    initFieldToValueConditionsBlock(exceptionBlock,conditionsBlockConstants.trn);
+    //exceptionBlock.html($('#conditionsBlockTemplate').html());
     var exceptionRulesTable = exceptionBlock.find('#rulesTable');
     exceptionRulesTable.data('rules', []);
     initAddConditionButton(exceptionBlock.find("#addConditionButton"), activeRuleProcessTypeConstants.gl1);
@@ -231,7 +232,8 @@ function addStationaryBlockToRule1Block(blockData, isLastOne) {
     $("#controlCheckboxLabel", div).html(blockData.lbl);
     var ruleBlock1FormBlocks = $("#ruleBlock1FormBlocks");
     ruleBlock1FormBlocks.append(div);
-    $("#conditionsBlock", div).html($('#conditionsBlockTemplate').html());
+    initFieldToValueConditionsBlock($("#conditionsBlock", div),conditionsBlockConstants.trn);
+    //$("#conditionsBlock", div).html($('#conditionsBlockTemplate').html());
     var rulesTable = $('#rulesTable', div);
     rulesTable.data('rules', []);
     initAddConditionButton($("#addConditionButton", div), activeRuleProcessTypeConstants.gl1);
@@ -276,7 +278,8 @@ function initRule2Block() {
  */
 function initBlock2GeneralExceptionConditionsBlock(blockData) {
     var exceptionBlock = $("#ruleBlock2GeneralExceptionConditionsBlock");
-    exceptionBlock.html($('#conditionsBlockTemplate').html());
+    initFieldToValueConditionsBlock(exceptionBlock,conditionsBlockConstants.trn);
+    //exceptionBlock.html($('#conditionsBlockTemplate').html());
     var exceptionRulesTable = exceptionBlock.find('#rulesTable');
     exceptionRulesTable.data('rules', []);
     initAddConditionButton(exceptionBlock.find("#addConditionButton"), activeRuleProcessTypeConstants.gl2);
@@ -390,7 +393,8 @@ function addRule2CorrBlock(blockData, isFirstOne) {
     }
     corrBlocksArray.push(corrBlock);
     $("#corrBlockLabel", corrBlock).html(corrData.lbl);
-    $("#conditionsBlock", corrBlock).html($('#conditionsBlockTemplate').html());
+    //$("#conditionsBlock", corrBlock).html($('#conditionsBlockTemplate').html());
+    initFieldToValueConditionsBlock($("#conditionsBlock", corrBlock),conditionsBlockConstants.trn);
     var rulesTable = $('#rulesTable', corrBlock);
     rulesTable.data('rules', []);
     initAddConditionButton($("#addConditionButton", corrBlock), activeRuleProcessTypeConstants.gl2);

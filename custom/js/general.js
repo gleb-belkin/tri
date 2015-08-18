@@ -95,7 +95,7 @@ function initGeneral() {
     $('a[href*=\'processTabs-1\']').html(languageConstants.general.edcLabel);
     $('a[href*=\'processTabs-2\']').html(languageConstants.general.glaLabel);
     $('a[href*=\'processTabs-3\']').html(languageConstants.general.recLabel);
-    initTemplates();
+    //initTemplates();
     initLogicalOperandsMenu();
     initBracketMenu();
     initRuleHistoryPopup();
@@ -160,8 +160,7 @@ function initTracePanel() {
  * Comment
  */
 function initTemplates() {
-    $('#rulesTableFieldSelectorHeader').html(languageConstants.templates.rulesTable.fieldSelectorHeader);
-    $('#rulesTableInputValueHeader').html(languageConstants.templates.rulesTable.inputValueHeader);
+
 }
 /**
  * Comment
@@ -1021,6 +1020,23 @@ function resetRuleValidationNotes() {
             break;
         case activeRuleProcessTypeConstants.rec:
             resetAddRecRulePopup(2);
+            break;
+    }
+}
+
+/**
+ * Comment
+ */
+function initFieldToValueConditionsBlock(conditionsBlock, conditionsBlockType) {
+    conditionsBlock.html($('#conditionsBlockTemplate').html());
+    switch (conditionsBlockType) {
+        case conditionsBlockConstants.trn:
+            $('#rulesTableFieldSelectorHeader', conditionsBlock).html(languageConstants.templates.rulesTable.trnFieldSelectorHeader);
+            $('#rulesTableInputValueHeader', conditionsBlock).html(languageConstants.templates.rulesTable.trnInputValueHeader);
+            break;
+        case conditionsBlockConstants.evt:
+            $('#rulesTableFieldSelectorHeader', conditionsBlock).html(languageConstants.templates.rulesTable.evtFieldSelectorHeader);
+            $('#rulesTableInputValueHeader', conditionsBlock).html(languageConstants.templates.rulesTable.evtInputValueHeader);
             break;
     }
 }

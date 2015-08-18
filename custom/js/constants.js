@@ -147,6 +147,7 @@ var languageConstants = {
     rec: {
         addRecRuleButtonLabel: 'Создать правило реконсиляции',
         rulesBlockLabel: 'Правила реконсиляции',
+        rulesSearchBlockLabel: 'Поиск:',
         historyLinkLabel: 'История изменений',
         addRecRulePopup: {
             header: 'Создайте правило, используя форму.',
@@ -167,8 +168,10 @@ var languageConstants = {
     },
     templates: {
         rulesTable: {
-            fieldSelectorHeader: 'Поле проводки',
-            inputValueHeader: 'Значение',
+            trnFieldSelectorHeader: 'Поле проводки',
+            trnInputValueHeader: 'Значение',
+            evtFieldSelectorHeader: 'Поле инцидента',
+            evtInputValueHeader: 'Значение',
             addConditionButtonLabel: 'Добавить условие',
             removeButtonLabel: 'x'
         }
@@ -198,6 +201,11 @@ var inputFieldTypeConstants = {
     number: 'number',
     date: 'date',
     dropdown: 'dropdown'
+};
+
+var conditionsBlockConstants = {
+    trn: 'trn',
+    evt: 'evt'
 };
 
 

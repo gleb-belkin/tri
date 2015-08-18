@@ -14,7 +14,7 @@ var availableEvtFields = [];
 
 var initialRecRuleData = {
     "lbl": '', "cnds": [
-        {"tfid": 1, "oid": 5, "efid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rw": 0, "rdo": 0, "rqr": 0}
+        {"tfid": 1, "oid": 5, "efid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rw": 50, "rdo": 0, "rqr": 0}
     ],
     "trnExceptions": {
         "end": 0, "cnds": [
@@ -48,7 +48,7 @@ var initialRecConditionData = {
  */
 function initRec() {
     initGeneralRecInterface();
-    initRecRulesBlock();
+    initRecRulesBlock(recRulesData);
     createAddRecRulePopup();
 }
 
@@ -65,7 +65,27 @@ function initGeneralRecInterface() {
         ruleCreationStatus = ruleCreationStatusConstants.add;
         initAddRecRulePopup();
     });
-    //init search container here
+    var recRulesSearchBlock = $("#recRulesSearchBlock");
+    recRulesSearchBlock.prepend($("<div></div>").html(languageConstants.rec.rulesSearchBlockLabel));
+    recRulesSearchBlock.find("input").autocomplete({
+        source: function (request, response) {
+            var matcher = new RegExp("" + $.ui.autocomplete.escapeRegex(request.term), "i");
+            //RegExp, that matches only words, whith a specified beginnings
+            //var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
+            var result = $.grep(recRulesData, function (element) {
+                return matcher.test(element.lbl);
+            });
+            initRecRulesBlock(result);
+            response([]);
+        },
+        response: function (event, ui) {
+            //
+        },
+        open: function (event, ui) {
+            //
+        },
+        minLength: 0
+    });
     $('#recRulesBlock').find('.formBlockHeader').html(languageConstants.rec.rulesBlockLabel);
 }
 
@@ -79,9 +99,6 @@ function initRecCondition(rule, considerAvl) {
     //init left to right
     //
     var evtFieldSelector = $('#evtPropertySelector select', rule);
-    //
-    //left bracket button
-    //initBracketButton('#leftBracketButton', '(', rule);
     //transaction property selector
     var trnFieldSelector = $('#trnPropertySelector select', rule);
     for (var i = 0; i < availableTrnFields.length; i++) {
@@ -112,56 +129,11 @@ function initRecCondition(rule, considerAvl) {
     trnFieldSelector.selectmenu("refresh");
     //operand selector
     initOperandSelector($('option:selected', trnFieldSelector).data('data'), rule);
-    //event property selector
-
-//    for (var i = 0; i < availableEvtFields.length; i++) {
-//        if ((availableEvtFields[i].avl === 0 && considerAvl) && ruleData.rdo !== 1) {
-//            continue;
-//        }
-//        var option = $('<option>' + availableEvtFields[i].lbl + '</option>');
-//        option.data('data', availableEvtFields[i]);
-//        evtFieldSelector.append(option);
-//    }
-//    evtFieldSelector.selectmenu({
-//        select: function (event, ui) {
-////            filterEvtFieldSelector(ui.item.element.data('data'), rule, false);
-////            initOperandSelector(ui.item.element.data('data'), rule);
-//        },
-//        open: function (event, ui) {
-//            evtFieldSelector.selectmenu("refresh");
-//        }
-//    }).selectmenu("menuWidget").addClass("propertySelectorOverflow");
-//    if (typeof ruleData !== 'undefined') {
-//        $('option', evtFieldSelector).filter(function (index) {
-//            return $(this).data('data').id === ruleData.efid;
-//        }).attr('selected', true);
-//        if (ruleData.rdo === 1 || ruleData.rqr === 1) {
-//            evtFieldSelector.selectmenu('disable');
-//        }
-//    }
-//    evtFieldSelector.selectmenu("refresh");
-
-
     //filter event field selector
     rebuildEvtFieldSelector(evtFieldSelector, $('option:selected', trnFieldSelector).data('data'), rule, considerAvl);
-    //right bracket button
-    //initBracketButton('#rightBracketButton', ')', rule);
-    /*if (ruleData !== undefined) {
-     rightBracketButton.button('option', 'label', ruleData.rbrl);
-     if (ruleData.rdo === 1) {
-     rightBracketButton.button('disable');
-     }
-     }*/
-//operand button
-    /*var operandButton = $('#operandButton button', rule);
-     operandButton.button().hide();
-     operandButton.click(function (event) {
-     //
-     });
-     if (typeof ruleData !== 'undefined') {
-     initOperandButtonData(operandButton, ruleData.loid, ruleData.rdo, ruleData.rqr);
-     }*/
-//remove button
+    //relative weight input field
+    $('#relativeWeight input', rule).val(ruleData.rw);
+    //remove button
     var removeButton = $('#remove', rule);
     removeButton.button({
         label: languageConstants.templates.rulesTable.removeButtonLabel,
@@ -177,11 +149,7 @@ function initRecCondition(rule, considerAvl) {
         removeButton.click(function () {
             var arrayIndex = $.inArray(rule, rulesArray);
             if (arrayIndex !== -1) {
-                /*if (arrayIndex === rulesArray.length - 1) {
-                 $('#operandButton button', rulesArray[arrayIndex - 1]).button('option', 'label', emptyLogicalOperandData.lbl).data('data', emptyLogicalOperandData).hide();
-                 } else {
-                 $('#operandButton button', rulesArray[arrayIndex - 1]).button('option', 'label', $('#operandButton button', rulesArray[arrayIndex]).data('data').lbl).data('data', $('#operandButton button', rulesArray[arrayIndex]).data('data'));
-                 }*/
+
                 rulesArray.splice(arrayIndex, 1);
                 rule.remove();
             }
@@ -195,18 +163,19 @@ function initRecCondition(rule, considerAvl) {
 /**
  * Comment
  */
-function initRecRulesBlock() {
-    for (var i = 0, max = recRulesData.length; i < max; i++) {
+function initRecRulesBlock(data) {
+    $("#recRulesBlock").find("#recRulesContainer").html("");
+    for (var i = 0, max = data.length; i < max; i++) {
         var div = $('<div></div>');
         div.prop('class', 'recRulesBlockElement');
-        div.data('ruleId', recRulesData[i].id);
+        div.data('ruleId', data[i].id);
         div.click(function () {
             showRecRule($(this).data('ruleId'), function (result) {
                 ruleCreationStatus = ruleCreationStatusConstants.update;
                 initAddRecRulePopup(result.data);
             });
         });
-        div.html(recRulesData[i].lbl);
+        div.html(data[i].lbl);
         $("#recRulesBlock").find("#recRulesContainer").append(div);
     }
 }
@@ -243,13 +212,15 @@ function createAddRecRulePopup() {
 //
     var trnExceptionConditionsBlock = $("#addRecRulePopupTrnExceptionConditions", addRecRulePopup);
     trnExceptionConditionsBlock.parent().prepend($($("#controlCheckboxBlockTemplate").html()));
-    trnExceptionConditionsBlock.html($('#conditionsBlockTemplate').html());
+    //trnExceptionConditionsBlock.html($('#conditionsBlockTemplate').html());
+    initFieldToValueConditionsBlock(trnExceptionConditionsBlock,conditionsBlockConstants.trn);
     trnExceptionConditionsBlock.prev().children().eq(1).html(languageConstants.rec.addRecRulePopup.trnExceptionSectionHeader);
     initCheckbox(trnExceptionConditionsBlock.prev().find("input"), trnExceptionConditionsBlock);
 //
     var evtExceptionConditionsBlock = $("#addRecRulePopupEvtExceptionConditions", addRecRulePopup);
     evtExceptionConditionsBlock.parent().prepend($($("#controlCheckboxBlockTemplate").html()));
-    evtExceptionConditionsBlock.html($('#conditionsBlockTemplate').html());
+    //evtExceptionConditionsBlock.html($('#conditionsBlockTemplate').html());
+    initFieldToValueConditionsBlock(evtExceptionConditionsBlock,conditionsBlockConstants.evt);
     evtExceptionConditionsBlock.prev().children().eq(1).html(languageConstants.rec.addRecRulePopup.evtExceptionSectionHeader);
     initCheckbox(evtExceptionConditionsBlock.prev().find("input"), evtExceptionConditionsBlock);
     //
@@ -411,7 +382,6 @@ function createAddRecRulePopupButtons() {
             });
         }
     };
-
     addRecRulePopupRemoveButtonData = {
         text: languageConstants.rec.addRecRulePopup.removeButtonLabel,
         click: function () {
@@ -420,7 +390,6 @@ function createAddRecRulePopupButtons() {
             });
         }
     };
-
     addRecRulePopupCancelButtonData = {
         text: languageConstants.rec.addRecRulePopup.cancelButtonLabel,
         click: function () {
