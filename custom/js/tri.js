@@ -2,7 +2,6 @@
  * Created by Gleb Belkin (gleb.belkin@outlook.com) on 29.07.2015.
  */
 
-
 /*
  * Execution
  */
@@ -60,7 +59,48 @@ jQuery.getScript(scripts, function () {
  */
 function rock() {
     preInit();
-    loadIncidentTypeData();
+    loadIncidentTypeData(function (incidentTypeResult) {
+            incidentTypeData = incidentTypeResult.data;
+            backendLogId = incidentTypeResult.dt_suf;
+            //loadCorrData();
+            loadRulesData(function (rulesDataResult) {
+                    availableTrnFields = rulesDataResult.data.availableTrnFields.sort(
+                        function (a, b) {
+                            if (a.lbl < b.lbl)
+                                return -1;
+                            if (a.lbl > b.lbl)
+                                return 1;
+                            return 0;
+                        });
+                    dropdownListItems = rulesDataResult.data.dropdownListItems;
+                    edcRulesData = rulesDataResult.data.edcRulesData;
+                    glaRule1Data = rulesDataResult.data.glaRule1Data;
+                    glaRule2Data = rulesDataResult.data.glaRule2Data;
+                    glaRule3Data = rulesDataResult.data.glaRule3Data;
+                    corrList = rulesDataResult.data.corrList;
+                    backendLogId = rulesDataResult.dt_suf;
+                    recRulesData = rulesDataResult.data.recRulesData;
+                    //todo parse real availableEvtFields from the server response
+                    availableEvtFields = rulesDataResult.data.availableTrnFields.sort(
+                        function (a, b) {
+                            if (a.lbl < b.lbl)
+                                return -1;
+                            if (a.lbl > b.lbl)
+                                return 1;
+                            return 0;
+                        });
+                    //loadUsedDropdownLists();
+                    init();
+                },
+                function () {
+                    showMessage(languageConstants.general.messagePopup.loadRulesData.fail);
+                    unlockScreen();
+                });
+        },
+        function () {
+            showMessage(languageConstants.general.messagePopup.loadIncidentTypeData.fail);
+            unlockScreen();
+        });
 }
 /**
  * Comment

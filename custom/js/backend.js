@@ -5,8 +5,8 @@
 /**
  * Comment
  */
-//todo: add parameters and success callback
-function loadIncidentTypeData() {
+//todo: fail callback
+function loadIncidentTypeData(successCallback, failCallback) {
     $.ajax({
         type: "POST",
         url: backendUrl,
@@ -17,22 +17,18 @@ function loadIncidentTypeData() {
             if (loadIncidentTypeDataResult == null) {
                 return;
             }
-            incidentTypeData = loadIncidentTypeDataResult.data;
-            backendLogId = loadIncidentTypeDataResult.dt_suf;
-            //loadCorrData();
-            loadRulesData();
+            successCallback(loadIncidentTypeDataResult);
         })
         .fail(function () {
-            showMessage(languageConstants.general.messagePopup.loadIncidentTypeData.fail);
-            unlockScreen();
+            failCallback();
         });
 }
 
 /**
  * Comment
  */
-//todo: add parameters and success callback
-function loadRulesData() {
+//todo: add fail callback
+function loadRulesData(successCallback, failCallback) {
     $.ajax({
         type: "POST",
         url: backendUrl,
@@ -43,37 +39,10 @@ function loadRulesData() {
             if (loadRulesDataResult == null) {
                 return;
             }
-            availableTrnFields = loadRulesDataResult.data.availableTrnFields.sort(
-                function (a, b) {
-                    if (a.lbl < b.lbl)
-                        return -1;
-                    if (a.lbl > b.lbl)
-                        return 1;
-                    return 0;
-                });
-            dropdownListItems = loadRulesDataResult.data.dropdownListItems;
-            edcRulesData = loadRulesDataResult.data.edcRulesData;
-            glaRule1Data = loadRulesDataResult.data.glaRule1Data;
-            glaRule2Data = loadRulesDataResult.data.glaRule2Data;
-            glaRule3Data = loadRulesDataResult.data.glaRule3Data;
-            corrList = loadRulesDataResult.data.corrList;
-            backendLogId = loadRulesDataResult.dt_suf;
-            recRulesData = loadRulesDataResult.data.recRulesData;
-            //todo parse real availableEvtFields from the server response
-            availableEvtFields = loadRulesDataResult.data.availableTrnFields.sort(
-                function (a, b) {
-                    if (a.lbl < b.lbl)
-                        return -1;
-                    if (a.lbl > b.lbl)
-                        return 1;
-                    return 0;
-                });
-            //loadUsedDropdownLists();
-            init();
+            successCallback(loadRulesDataResult);
         })
         .fail(function () {
-            showMessage(languageConstants.general.messagePopup.loadRulesData.fail);
-            unlockScreen();
+            failCallback();
         });
 }
 
