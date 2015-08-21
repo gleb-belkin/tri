@@ -23,6 +23,10 @@ var languageConstants = {
                 success: 'Правило успешно сохранено.',
                 fail: 'Ошибка при сохранении правила.'
             },
+            saveRecRule: {
+                success: 'Правило реконсиляции успешно сохранено.',
+                fail: 'Ошибка при сохранении правила реконсиляции.'
+            },
             removeRule: {
                 success: 'Правило успешно удалено.',
                 fail: 'Ошибка при удалении правила.'
@@ -182,6 +186,7 @@ var backendMethodConstants = {
     getIncidentTypeData: 'get_incident_type_data',
     getInitData: 'get_init_data',
     saveRule: 'save_rule',
+    saveRecRule: 'save_rec_rule',
     removeRule: 'remove_rule',
     getCorrData: 'get_corr_data',
     getRuleHistory: 'get_history',

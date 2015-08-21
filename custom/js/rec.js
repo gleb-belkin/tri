@@ -213,14 +213,14 @@ function createAddRecRulePopup() {
     var trnExceptionConditionsBlock = $("#addRecRulePopupTrnExceptionConditions", addRecRulePopup);
     trnExceptionConditionsBlock.parent().prepend($($("#controlCheckboxBlockTemplate").html()));
     //trnExceptionConditionsBlock.html($('#conditionsBlockTemplate').html());
-    initFieldToValueConditionsBlock(trnExceptionConditionsBlock,conditionsBlockConstants.trn);
+    initFieldToValueConditionsBlock(trnExceptionConditionsBlock, conditionsBlockConstants.trn);
     trnExceptionConditionsBlock.prev().children().eq(1).html(languageConstants.rec.addRecRulePopup.trnExceptionSectionHeader);
     initCheckbox(trnExceptionConditionsBlock.prev().find("input"), trnExceptionConditionsBlock);
 //
     var evtExceptionConditionsBlock = $("#addRecRulePopupEvtExceptionConditions", addRecRulePopup);
     evtExceptionConditionsBlock.parent().prepend($($("#controlCheckboxBlockTemplate").html()));
     //evtExceptionConditionsBlock.html($('#conditionsBlockTemplate').html());
-    initFieldToValueConditionsBlock(evtExceptionConditionsBlock,conditionsBlockConstants.evt);
+    initFieldToValueConditionsBlock(evtExceptionConditionsBlock, conditionsBlockConstants.evt);
     evtExceptionConditionsBlock.prev().children().eq(1).html(languageConstants.rec.addRecRulePopup.evtExceptionSectionHeader);
     initCheckbox(evtExceptionConditionsBlock.prev().find("input"), evtExceptionConditionsBlock);
     //
@@ -378,7 +378,31 @@ function createAddRecRulePopupButtons() {
                 return;
             }
             openConfirmActionPopup(languageConstants.general.confirmationPopup.rec.saveNote, true, true, languageConstants.general.confirmationPopup.rec.emptyCommentNote, function () {
-                saveRule(ruleTypeConstants.activeRule);
+                saveRule(recModel.getActiveRuleData(),
+                    function (result) {
+                        /*switch (ruleCreationStatus) {
+                            case ruleCreationStatusConstants.add:
+                                edcRulesData.push(ruleData.data);
+                                break;
+                            case ruleCreationStatusConstants.update:
+                                for (var i = 0, max = edcRulesData.length; i < max; i++) {
+                                    if (edcRulesData[i].itid === ruleData.data.itid) {
+                                        edcRulesData[i] = ruleData.data;
+                                        break;
+                                    }
+                                }
+                                break;
+                        }*/
+                        initRecRulesBlock();
+                        addRecRulePopup.dialog("close");
+                        showMessage(languageConstants.general.messagePopup.saveRecRule.success);
+                        unlockScreen();
+
+                    },
+                    function () {
+                        showMessage(languageConstants.general.messagePopup.saveRule.fail);
+                        unlockScreen();
+                    });
             });
         }
     };

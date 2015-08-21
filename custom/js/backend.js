@@ -47,7 +47,6 @@ function loadRulesData(successCallback, failCallback) {
 }
 
 
-
 /**
  * Saves rule to server.
  * @param {object} ruleType - Rule type: rule or draft.
@@ -267,8 +266,6 @@ function showRecRule(ruleId, successCallback) {
 }
 
 
-
-
 /**
  * Requests rule history from the backend and displays it in the rule history popup.
  */
@@ -321,19 +318,24 @@ function showRecRuleHistory(ruleId, successCallback) {
     $.ajax({
         type: "POST",
         url: backendUrl,
-        data: {tr_method: backendMethodConstants.getRecRuleHistory, dt_suf: backendLogId, rule_type: activeRuleProcessType, rule_id: ruleId}
+        data: {
+            tr_method: backendMethodConstants.getRecRuleHistory,
+            dt_suf: backendLogId,
+            rule_type: activeRuleProcessType,
+            rule_id: ruleId
+        }
     })
-            .done(function (getRecRuleHistoryResponse) {
-                var getRecRuleHistoryResult = performBaseResponseProcessing(getRecRuleHistoryResponse, backendMethodConstants.getRecRuleHistory);
-                if (getRecRuleHistoryResult === null) {
-                    return;
-                }
-                successCallback(getRecRuleHistoryResult);
-                unlockScreen();
-            })
-            .fail(function (msg) {
-                showMessage(languageConstants.general.messagePopup.getRecRuleHistory.fail);
-                unlockScreen();
+        .done(function (getRecRuleHistoryResponse) {
+            var getRecRuleHistoryResult = performBaseResponseProcessing(getRecRuleHistoryResponse, backendMethodConstants.getRecRuleHistory);
+            if (getRecRuleHistoryResult === null) {
                 return;
-            });
+            }
+            successCallback(getRecRuleHistoryResult);
+            unlockScreen();
+        })
+        .fail(function (msg) {
+            showMessage(languageConstants.general.messagePopup.getRecRuleHistory.fail);
+            unlockScreen();
+            return;
+        });
 }
