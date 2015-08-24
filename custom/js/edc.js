@@ -20,6 +20,10 @@ var ruleCreationStatusConstants = {
     update: 'update',
     void: 'void'
 };
+var recRuleCreationStatusConstants = {
+    add: 'add',
+    update: 'update'
+};
 var ruleTypeConstants = {activeRule: 1, draft: 2};
 
 //itid = incidentTypeId

@@ -20,6 +20,7 @@ RecBackendService.saveRule = function (ruleData, successCallback, failCallback) 
         data: {
             tr_method: backendMethodConstants.saveRecRule,
             dt_suf: backendLogId,
+            rule_id: requestData.id,
             rule_nm: requestData.name,
             rule_txt: requestData.conditionsWeb,
             rule_sql: requestData.conditionsSql,
@@ -36,5 +37,34 @@ RecBackendService.saveRule = function (ruleData, successCallback, failCallback) 
         })
         .fail(function () {
             failCallback();
+        });
+}
+
+/**
+ * Removes rule.
+ */
+//todo: add parameters and success callback
+RecBackendService.removeRule = function (ruleId) {
+    lockScreen();
+    $.ajax({
+        type: "POST",
+        url: backendUrl,
+        data: {tr_method: backendMethodConstants.removeRule, dt_suf: backendLogId, tr_instr: getRemoveRuleString()}
+    })
+        .done(function (removeRuleResponse) {
+            var removeRuleResult = performBaseResponseProcessing(removeRuleResponse, backendMethodConstants.removeRule);
+            if (removeRuleResult === null) {
+                return;
+            }
+            removeActiveEdcRule();
+            resetEdcRulesBlock();
+            initEdcRulesBlock();
+            addEdcRulePopup.dialog("close");
+            unlockScreen();
+            showMessage(languageConstants.general.messagePopup.removeRule.success);
+        })
+        .fail(function () {
+            showMessage(languageConstants.general.messagePopup.removeRule.fail);
+            unlockScreen();
         });
 }

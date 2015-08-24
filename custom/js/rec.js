@@ -6,13 +6,14 @@
 //lbl = label
 //lid = listId
 
-var addRecRulePopup, addRecRulePopupSaveButtonData, addRecRulePopupRemoveButtonData, addRecRulePopupCancelButtonData;
+var addRecRulePopup, addRecRulePopupSaveButtonData, addRecRulePopupRemoveButtonData, addRecRulePopupCancelButtonData, recRuleCreationStatus;
 
 var recRulesData = [];
 
 var availableEvtFields = [];
 
 var initialRecRuleData = {
+    "id":"-1",
     "lbl": '', "cnds": [
         {"tfid": 1, "oid": 5, "efid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rw": 50, "rdo": 0, "rqr": 0}
     ],
@@ -34,13 +35,12 @@ var initialRecConditionData = {
     "tfid": -1,
     "oid": -1,
     "efid": -1,
-    "loid": -1,
-    "lbrl": '',
-    "rbrl": '',
     "rw": 0,
     "rdo": 0,
     "rqr": 0
 };
+
+var recModel = new RecModel();
 
 
 /**
@@ -62,7 +62,7 @@ function initGeneralRecInterface() {
             primary: "ui-icon-plus"
         }
     }).click(function (e) {
-        ruleCreationStatus = ruleCreationStatusConstants.add;
+        recRuleCreationStatus = recRuleCreationStatusConstants.add;
         initAddRecRulePopup();
     });
     var recRulesSearchBlock = $("#recRulesSearchBlock");
@@ -171,7 +171,7 @@ function initRecRulesBlock(data) {
         div.data('ruleId', data[i].id);
         div.click(function () {
             showRecRule($(this).data('ruleId'), function (result) {
-                ruleCreationStatus = ruleCreationStatusConstants.update;
+                recRuleCreationStatus = recRuleCreationStatusConstants.update;
                 initAddRecRulePopup(result.data);
             });
         });
@@ -280,6 +280,7 @@ function initAddRecRulePopup(recRuleData) {
         popupButtonsArray.push(addRecRulePopupSaveButtonData, addRecRulePopupCancelButtonData);
     }
     addRecRulePopup.data('data', recRuleData);
+    addRecRulePopup.data('ruleId', recRuleData.id);
     //
     var recConditionsTable = $('#addRecRulePopupRecConditions', addRecRulePopup).children().eq(1).children().first();
     recConditionsTable.data('rules', []);
@@ -322,7 +323,7 @@ function initAddRecRulePopup(recRuleData) {
     addRecRulePopup.dialog("option", "title", popupTitle);
     addRecRulePopup.dialog('option', 'buttons', popupButtonsArray);
     addRecRulePopup.dialog('open');
-    $('#recHistoryLinkContainer a', addRecRulePopup).toggle(ruleCreationStatus == ruleCreationStatusConstants.update).blur();
+    $('#recHistoryLinkContainer a', addRecRulePopup).toggle(recRuleCreationStatus == recRuleCreationStatusConstants.update).blur();
 }
 
 
@@ -378,22 +379,23 @@ function createAddRecRulePopupButtons() {
                 return;
             }
             openConfirmActionPopup(languageConstants.general.confirmationPopup.rec.saveNote, true, true, languageConstants.general.confirmationPopup.rec.emptyCommentNote, function () {
-                saveRule(recModel.getActiveRuleData(),
+                var ruleData = recModel.getActiveRuleData();
+                RecBackendService.saveRule(ruleData,
                     function (result) {
-                        /*switch (ruleCreationStatus) {
-                            case ruleCreationStatusConstants.add:
-                                edcRulesData.push(ruleData.data);
+                        switch (recRuleCreationStatus) {
+                            case recRuleCreationStatusConstants.add:
+                                recRulesData.push(ruleData.data);
                                 break;
-                            case ruleCreationStatusConstants.update:
-                                for (var i = 0, max = edcRulesData.length; i < max; i++) {
-                                    if (edcRulesData[i].itid === ruleData.data.itid) {
-                                        edcRulesData[i] = ruleData.data;
+                            case recRuleCreationStatusConstants.update:
+                                for (var i = 0, max = recRulesData.length; i < max; i++) {
+                                    if (recRulesData[i].id === ruleData.data.id) {
+                                        recRulesData[i] = ruleData.data;
                                         break;
                                     }
                                 }
                                 break;
-                        }*/
-                        initRecRulesBlock();
+                        }
+                        initRecRulesBlock(recRulesData);
                         addRecRulePopup.dialog("close");
                         showMessage(languageConstants.general.messagePopup.saveRecRule.success);
                         unlockScreen();
@@ -410,7 +412,7 @@ function createAddRecRulePopupButtons() {
         text: languageConstants.rec.addRecRulePopup.removeButtonLabel,
         click: function () {
             openConfirmActionPopup(languageConstants.general.confirmationPopup.rec.removeNote, true, true, languageConstants.general.confirmationPopup.rec.emptyCommentNote, function () {
-                removeRule();
+                RecBackendService.removeRule(addRecRulePopup.data('ruleId'));
             });
         }
     };
@@ -431,3 +433,41 @@ function createAddRecRulePopupButtons() {
 function checkAddRecRulePopupRequiredFields() {
     return $('#recRuleNameInputContainer').find('input').val() !== '';
 }
+
+function RecModel() {
+    //
+}
+
+RecModel.prototype.getActiveRuleData = function () {
+    var ruleId = addRecRulePopup.data('ruleId');
+    var name = $("#recRuleNameInputContainer").find("input").val();
+    var recConditionsData = getRecConditionsData($('#addRecRulePopupRecConditions #rulesTable', addRecRulePopup));
+    var trnExceptionsConditionsData = getConditionsData($('#addRecRulePopupTrnExceptionConditions #rulesTable', addRecRulePopup));
+    var evtExceptionsConditionsData = getConditionsData($('#addRecRulePopupEvtExceptionConditions #rulesTable', addRecRulePopup));
+    var ruleData = $.extend({}, initialRecRuleData);
+    ruleData.id = ruleId;
+    ruleData.lbl = name;
+    ruleData.cnds = recConditionsData.list;
+    ruleData.trnExceptions = trnExceptionsConditionsData.list;
+    ruleData.evtExceptions = evtExceptionsConditionsData.list;
+    var userComment = $('textarea', confirmActionPopup).val();
+    var requestData = {
+        id: ruleId,
+        name: name,
+        recConditionsWeb: recConditionsData.web,
+        trnExceptionsConditionsWeb: trnExceptionsConditionsData.web,
+        evtExceptionsConditionsWeb: evtExceptionsConditionsData.web,
+        recConditionsText: recConditionsData.text,
+        trnExceptionsConditionsText: trnExceptionsConditionsData.text,
+        evtExceptionsConditionsText: evtExceptionsConditionsData.text,
+        recConditionsSql: recConditionsData.sql,
+        trnExceptionsConditionsSql: trnExceptionsConditionsData.sql,
+        evtExceptionsConditionsSql: evtExceptionsConditionsData.sql,
+        userComment: userComment
+    };
+    return {
+        data: ruleData,
+        requestData: requestData
+    };
+}
+;

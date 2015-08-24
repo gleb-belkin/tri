@@ -288,7 +288,6 @@ function logoutButtonClickHandler() {
 }
 
 
-
 /**
  * Comment
  */
@@ -356,7 +355,6 @@ function initCheckbox(checkbox, block) {
 }
 
 
-
 /**
  * Comment
  */
@@ -401,8 +399,6 @@ function initHistoryPopupElementsContainer(data) {
 }
 
 
-
-
 /**
  * Comment
  */
@@ -419,6 +415,26 @@ function getConditionsData(rulesTable) {
         }
         conditionsText += rule.data('text');
         conditionsSql += rule.data('sql');
+    });
+    return {web: JSON.stringify(conditionsArray), text: conditionsText, sql: conditionsSql, list: conditionsArray};
+}
+
+/**
+ * Comment
+ */
+function getRecConditionsData(conditionsTable) {
+    var conditionsArray = [];
+    var conditionsText = '';
+    var conditionsSql = '';
+    $.each(conditionsTable.data('rules'), function (index, conditionLayoutElement) {
+        var conditionData = getRecConditionData(conditionLayoutElement);
+        conditionsArray.push($.extend({}, conditionData.web));
+        if (index !== 0) {
+            conditionsText += ' ';
+            conditionsSql += ' ';
+        }
+        conditionsText += conditionData.text;
+        conditionsSql += conditionData.sql;
     });
     return {web: JSON.stringify(conditionsArray), text: conditionsText, sql: conditionsSql, list: conditionsArray};
 }
@@ -458,6 +474,32 @@ function updateConditionData(condition) {
     //condition.data('sql', $.trim(condition.data('data').lbrl + $('#propertySelector option:selected', condition).data('data').name + ' ' + $('#operandSelector option:selected', condition).data('data').name + ' ' + fieldValue.sqlValue + condition.data('data').rbrl + ' ' + $('#operandButton button', condition).data('data').name));
 }
 
+/**
+ * Comment
+ */
+function getRecConditionData(conditionLayoutElement) {
+    var trnPropertySelectorData = $('#trnPropertySelector option:selected', conditionLayoutElement).data('data');
+    var operandSelectorData = $('#operandSelector option:selected', conditionLayoutElement).data('data');
+    var evtPropertySelectorData = $('#evtPropertySelector option:selected', conditionLayoutElement).data('data');
+    var relativeWeightInputValue = $('#relativeWeight input', conditionLayoutElement).val();
+    var web = $.extend({}, initialRecConditionData);
+    web.tfid = trnPropertySelectorData.id;
+    web.oid = operandSelectorData.id;
+    web.efid = evtPropertySelectorData.id;
+    web.rw = relativeWeightInputValue;
+    var text = '';
+    text += trnPropertySelectorData.lbl + ' ';
+    text += operandSelectorData.lbl + ' ';
+    text += evtPropertySelectorData.lbl + ' ';
+    text += 'RW' + relativeWeightInputValue;
+    var sql = '';
+    sql += trnPropertySelectorData.name + ' ';
+    sql += operandSelectorData.name + ' ';
+    sql += evtPropertySelectorData.name + ' ';
+    sql += 'RW' + relativeWeightInputValue;
+    return {web: web, text: text, sql: sql};
+}
+
 
 /**
  * Comment
@@ -489,7 +531,6 @@ function getInputFieldValue(inputFieldContainer, inputFieldType, sqlStringPrefix
     }
     return {inputValue: inputValue, inputValueId: inputValueId, sqlValue: sqlValue};
 }
-
 
 
 /**
@@ -659,7 +700,6 @@ function initCondition(rule, considerAvl) {
 }
 
 
-
 /**
  * Comment
  */
@@ -680,7 +720,6 @@ function initOperandButtonData(operandButton, logicalOperandId, ruleIsReadOnly) 
         operandButton.button('disable');
     }
 }
-
 
 
 /**
@@ -838,8 +877,6 @@ function initOperandSelector(fieldData, rule) {
     }
     operandSelector.selectmenu("refresh");
 }
-
-
 
 
 /**
