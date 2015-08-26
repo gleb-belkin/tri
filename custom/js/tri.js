@@ -42,7 +42,8 @@ var scripts = [
     "custom/js/general.js",
     "custom/js/edc.js",
     "custom/js/gla.js",
-    "custom/js/rec.js"
+    "custom/js/rec.js",
+    "custom/js/rec_backend.js"
 ];
 
 

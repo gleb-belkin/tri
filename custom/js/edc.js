@@ -454,10 +454,10 @@ function checkAddEdcRulePopupRequiredFields() {
 /**
  * Generates parameters string for the backend 'remove_rule' method.
  */
-function removeActiveEdcRule() {
-    for (var i = 0, max = edcRulesData.length; i < max; i++) {
-        if (edcRulesData[i].itid === $('#incidentTypeSelector', addEdcRulePopup).data('data').id) {
-            edcRulesData.splice(i, 1);
+function removeRecRuleFromList(ruleId) {
+    for (var i = 0, max = recRulesData.length; i < max; i++) {
+        if (recRulesData[i].id === ruleId) {
+            recRulesData.splice(i, 1);
             break;
         }
     }

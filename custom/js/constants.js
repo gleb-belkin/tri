@@ -31,6 +31,10 @@ var languageConstants = {
                 success: 'Правило успешно удалено.',
                 fail: 'Ошибка при удалении правила.'
             },
+            removeRecRule: {
+                success: 'Правило успешно удалено.',
+                fail: 'Ошибка при удалении правила.'
+            },
             loadCorrData: {
                 success: 'Справочник корреспонденции успешно загружен.',
                 fail: 'Ошибка при загрузке справочника корреспонденции.'
@@ -188,6 +192,7 @@ var backendMethodConstants = {
     saveRule: 'save_rule',
     saveRecRule: 'save_rec_rule',
     removeRule: 'remove_rule',
+    removeRecRule: 'remove_rec_rule',
     getCorrData: 'get_corr_data',
     getRuleHistory: 'get_history',
     getRecRuleHistory: 'get_rec_rule_history',

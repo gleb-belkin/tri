@@ -412,7 +412,19 @@ function createAddRecRulePopupButtons() {
         text: languageConstants.rec.addRecRulePopup.removeButtonLabel,
         click: function () {
             openConfirmActionPopup(languageConstants.general.confirmationPopup.rec.removeNote, true, true, languageConstants.general.confirmationPopup.rec.emptyCommentNote, function () {
-                RecBackendService.removeRule(addRecRulePopup.data('ruleId'));
+                var ruleId = addRecRulePopup.data('ruleId');
+                RecBackendService.removeRule(ruleId,
+                    function () {
+                        removeRecRuleFromList(ruleId);
+                        initRecRulesBlock(recRulesData);
+                        addRecRulePopup.dialog("close");
+                        unlockScreen();
+                        showMessage(languageConstants.general.messagePopup.removeRecRule.success);
+                    },
+                    function () {
+                        showMessage(languageConstants.general.messagePopup.saveRule.fail);
+                        unlockScreen();
+                    });
             });
         }
     };

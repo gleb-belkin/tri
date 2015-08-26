@@ -44,27 +44,23 @@ RecBackendService.saveRule = function (ruleData, successCallback, failCallback) 
  * Removes rule.
  */
 //todo: add parameters and success callback
-RecBackendService.removeRule = function (ruleId) {
+RecBackendService.removeRule = function (ruleId, successCallback, failCallback) {
     lockScreen();
     $.ajax({
         type: "POST",
         url: backendUrl,
-        data: {tr_method: backendMethodConstants.removeRule, dt_suf: backendLogId, tr_instr: getRemoveRuleString()}
+        data: {tr_method: backendMethodConstants.removeRecRule, dt_suf: backendLogId, rule_id: ruleId}
     })
         .done(function (removeRuleResponse) {
             var removeRuleResult = performBaseResponseProcessing(removeRuleResponse, backendMethodConstants.removeRule);
             if (removeRuleResult === null) {
                 return;
             }
-            removeActiveEdcRule();
-            resetEdcRulesBlock();
-            initEdcRulesBlock();
-            addEdcRulePopup.dialog("close");
-            unlockScreen();
-            showMessage(languageConstants.general.messagePopup.removeRule.success);
+            successCallback();
         })
         .fail(function () {
-            showMessage(languageConstants.general.messagePopup.removeRule.fail);
+            failCallback();
+            showMessage(languageConstants.general.messagePopup.removeRecRule.fail);
             unlockScreen();
         });
 }
