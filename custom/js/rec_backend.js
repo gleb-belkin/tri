@@ -22,9 +22,15 @@ RecBackendService.saveRule = function (ruleData, successCallback, failCallback) 
             dt_suf: backendLogId,
             rule_id: requestData.id,
             rule_nm: requestData.name,
-            rule_txt: requestData.conditionsWeb,
-            rule_sql: requestData.conditionsSql,
-            rule_desc: requestData.conditionsText,
+            rec_conditions_web: requestData.recConditionsWeb,
+            trn_exceptions_conditions_web: requestData.trnExceptionsConditionsWeb,
+            evt_exceptions_conditions_web: requestData.evtExceptionsConditionsWeb,
+            rec_conditions_text: requestData.recConditionsText,
+            trn_exceptions_conditions_text: requestData.trnExceptionsConditionsText,
+            evt_exceptions_conditions_text: requestData.evtExceptionsConditionsText,
+            rec_conditions_sql: requestData.recConditionsSql,
+            trn_exceptions_conditions_sql: requestData.trnExceptionsConditionsSql,
+            evt_exceptions_conditions_sql: requestData.evtExceptionsConditionsSql,
             comment: requestData.userComment,
         }
     })
