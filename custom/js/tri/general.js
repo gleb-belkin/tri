@@ -166,9 +166,8 @@ function initTemplates() {
  * Comment
  */
 function initLockScreenPopup() {
-//    $.blockUI.defaults.css = {};
-//    $.blockUI.defaults.message = $('#lockScreenMessage');
-//    $('#lockScreenMessage').center();
+    var lockScreenMessageBlock = $("#lockScreenMessage");
+    lockScreenMessageBlock.append($("<img>").prop("src", lockMessagePopupImagePath));
     lockScreenPopup = $("#lockScreenMessage").dialog({
         autoOpen: false,
         modal: true,

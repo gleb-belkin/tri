@@ -34,16 +34,16 @@
 })(jQuery);
 
 var scripts = [
-    "custom/js/config.js",
-    "custom/js/constants.js",
-    "custom/js/backend.js",
-    "custom/js/backend_helpers.js",
-    "custom/js/general_helpers.js",
-    "custom/js/general.js",
-    "custom/js/edc.js",
-    "custom/js/gla.js",
-    "custom/js/rec.js",
-    "custom/js/rec_backend.js"
+    "custom/js/tri/config.js",
+    "custom/js/tri/constants.js",
+    "custom/js/tri/backend.js",
+    "custom/js/tri/backend_helpers.js",
+    "custom/js/tri/general_helpers.js",
+    "custom/js/tri/general.js",
+    "custom/js/tri/edc.js",
+    "custom/js/tri/gla.js",
+    "custom/js/tri/rec.js",
+    "custom/js/tri/rec_backend.js"
 ];
 
 

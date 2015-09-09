@@ -218,4 +218,6 @@ var conditionsBlockConstants = {
     evt: 'evt'
 };
 
+var lockMessagePopupImagePath = "custom/img/general/ajax-loader.gif";
+
 
