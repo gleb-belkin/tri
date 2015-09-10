@@ -171,7 +171,7 @@ var languageConstants = {
             fieldsFormatNote: 'Пожалуйста, проверьте формат ввода выделенных полей.',
             matchLevelSettingsBlockEtlFromLabel: 'Предполагаемая связь: от',
             matchLevelSettingsBlockEtlToLabel: 'до',
-            matchLevelSettingsBlockFimFromLabel: 'Финансовое последствие: от'
+            matchLevelSettingsBlockFimFromLabel: 'Финансовое последствие: свыше'
         }
     },
     templates: {

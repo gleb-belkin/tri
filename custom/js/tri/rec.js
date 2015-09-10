@@ -212,14 +212,12 @@ function createAddRecRulePopup() {
 //
     var trnExceptionConditionsBlock = $("#addRecRulePopupTrnExceptionConditions", addRecRulePopup);
     trnExceptionConditionsBlock.parent().prepend($($("#controlCheckboxBlockTemplate").html()));
-    //trnExceptionConditionsBlock.html($('#conditionsBlockTemplate').html());
     initFieldToValueConditionsBlock(trnExceptionConditionsBlock, conditionsBlockConstants.trn);
     trnExceptionConditionsBlock.prev().children().eq(1).html(languageConstants.rec.addRecRulePopup.trnExceptionSectionHeader);
     initCheckbox(trnExceptionConditionsBlock.prev().find("input"), trnExceptionConditionsBlock);
 //
     var evtExceptionConditionsBlock = $("#addRecRulePopupEvtExceptionConditions", addRecRulePopup);
     evtExceptionConditionsBlock.parent().prepend($($("#controlCheckboxBlockTemplate").html()));
-    //evtExceptionConditionsBlock.html($('#conditionsBlockTemplate').html());
     initFieldToValueConditionsBlock(evtExceptionConditionsBlock, conditionsBlockConstants.evt);
     evtExceptionConditionsBlock.prev().children().eq(1).html(languageConstants.rec.addRecRulePopup.evtExceptionSectionHeader);
     initCheckbox(evtExceptionConditionsBlock.prev().find("input"), evtExceptionConditionsBlock);
@@ -454,14 +452,23 @@ RecModel.prototype.getActiveRuleData = function () {
     var ruleId = addRecRulePopup.data('ruleId');
     var name = $("#recRuleNameInputContainer").find("input").val();
     var recConditionsData = getRecConditionsData($('#addRecRulePopupRecConditions #rulesTable', addRecRulePopup));
+    var trnExceptionsEnabled = $("#addRecRulePopupTrnExceptionConditions", addRecRulePopup).prev().find("input").prop("checked") ? 1 : 0;
     var trnExceptionsConditionsData = getConditionsData($('#addRecRulePopupTrnExceptionConditions #rulesTable', addRecRulePopup));
+    var evtExceptionsEnabled = $("#addRecRulePopupEvtExceptionConditions", addRecRulePopup).prev().find("input").prop("checked") ? 1 : 0;
     var evtExceptionsConditionsData = getConditionsData($('#addRecRulePopupEvtExceptionConditions #rulesTable', addRecRulePopup));
+    var matchLevelSettingBlock = $("#addRecRulePopupMatchLevelSettingsBlock");
+    var etlFrom = $("input", matchLevelSettingBlock.children().first()).first().val();
+    var etlTo = $("input", matchLevelSettingBlock.children().first()).eq(1).val();
     var ruleData = $.extend({}, initialRecRuleData);
     ruleData.id = ruleId;
     ruleData.lbl = name;
     ruleData.cnds = recConditionsData.list;
-    ruleData.trnExceptions = trnExceptionsConditionsData.list;
-    ruleData.evtExceptions = evtExceptionsConditionsData.list;
+    ruleData.trnExceptions.end = trnExceptionsEnabled;
+    ruleData.trnExceptions.cnds = trnExceptionsConditionsData.list;
+    ruleData.evtExceptions.end = evtExceptionsEnabled;
+    ruleData.evtExceptions.cnds = evtExceptionsConditionsData.list;
+    ruleData.etl_from = etlFrom;
+    ruleData.etl_to = etlTo;
     var userComment = $('textarea', confirmActionPopup).val();
     var requestData = {
         id: ruleId,
@@ -475,7 +482,11 @@ RecModel.prototype.getActiveRuleData = function () {
         recConditionsSql: recConditionsData.sql,
         trnExceptionsConditionsSql: trnExceptionsConditionsData.sql,
         evtExceptionsConditionsSql: evtExceptionsConditionsData.sql,
-        userComment: userComment
+        userComment: userComment,
+        trnExceptionsEnabled: trnExceptionsEnabled,
+        evtExceptionsEnabled: evtExceptionsEnabled,
+        etlFrom: etlFrom,
+        etlTo: etlTo
     };
     return {
         data: ruleData,

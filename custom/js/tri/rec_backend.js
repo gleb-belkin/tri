@@ -32,6 +32,10 @@ RecBackendService.saveRule = function (ruleData, successCallback, failCallback) 
             trn_exceptions_conditions_sql: requestData.trnExceptionsConditionsSql,
             evt_exceptions_conditions_sql: requestData.evtExceptionsConditionsSql,
             comment: requestData.userComment,
+            trn_exceptions_enabled: requestData.trnExceptionsEnabled,
+            evt_exceptions_enabled: requestData.evtExceptionsEnabled,
+            etl_from: requestData.etlFrom,
+            etl_to: requestData.etlTo
         }
     })
         .done(function (saveRuleResponse) {
