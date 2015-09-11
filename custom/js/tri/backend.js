@@ -244,31 +244,6 @@ function getDropdownList(listId) {
 /**
  * Requests rule history from the backend and displays it in the rule history popup.
  */
-function showRecRule(ruleId, successCallback) {
-    lockScreen();
-    $.ajax({
-        type: "POST",
-        url: backendUrl,
-        data: {tr_method: backendMethodConstants.getRecRuleData, dt_suf: backendLogId}
-    })
-        .done(function (getRecRuleDataResponse) {
-            var getRecRuleDataResult = performBaseResponseProcessing(getRecRuleDataResponse, backendMethodConstants.getRecRuleData);
-            if (getRecRuleDataResult === null) {
-                return;
-            }
-            successCallback(getRecRuleDataResult);
-            unlockScreen();
-        })
-        .fail(function () {
-            showMessage(languageConstants.general.messagePopup.getRecRuleData.fail);
-            unlockScreen();
-        });
-}
-
-
-/**
- * Requests rule history from the backend and displays it in the rule history popup.
- */
 //todo: add parameters and success callback
 function showRuleHistory() {
     var incidentTypeId = -1;
@@ -306,36 +281,5 @@ function showRuleHistory() {
         .fail(function () {
             showMessage(languageConstants.general.messagePopup.getRuleHistory.fail);
             unlockScreen();
-        });
-}
-
-
-/**
- * Requests reconciliation rule history from the backend and displays it in the reconciliation rule history popup.
- */
-function showRecRuleHistory(ruleId, successCallback) {
-    lockScreen();
-    $.ajax({
-        type: "POST",
-        url: backendUrl,
-        data: {
-            tr_method: backendMethodConstants.getRecRuleHistory,
-            dt_suf: backendLogId,
-            rule_type: activeRuleProcessType,
-            rule_id: ruleId
-        }
-    })
-        .done(function (getRecRuleHistoryResponse) {
-            var getRecRuleHistoryResult = performBaseResponseProcessing(getRecRuleHistoryResponse, backendMethodConstants.getRecRuleHistory);
-            if (getRecRuleHistoryResult === null) {
-                return;
-            }
-            successCallback(getRecRuleHistoryResult);
-            unlockScreen();
-        })
-        .fail(function (msg) {
-            showMessage(languageConstants.general.messagePopup.getRecRuleHistory.fail);
-            unlockScreen();
-            return;
         });
 }

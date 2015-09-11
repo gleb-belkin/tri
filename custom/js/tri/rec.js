@@ -13,7 +13,7 @@ var recRulesData = [];
 var availableEvtFields = [];
 
 var initialRecRuleData = {
-    "id":"-1",
+    "id": "-1",
     "lbl": '', "cnds": [
         {"tfid": 1, "oid": 5, "efid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rw": 50, "rdo": 0, "rqr": 0}
     ],
@@ -170,10 +170,16 @@ function initRecRulesBlock(data) {
         div.prop('class', 'recRulesBlockElement');
         div.data('ruleId', data[i].id);
         div.click(function () {
-            showRecRule($(this).data('ruleId'), function (result) {
-                recRuleCreationStatus = recRuleCreationStatusConstants.update;
-                initAddRecRulePopup(result.data);
-            });
+            RecBackendService.showRecRule($(this).data('ruleId'),
+                function (result) {
+                    recRuleCreationStatus = recRuleCreationStatusConstants.update;
+                    initAddRecRulePopup(result.data);
+                },
+                function () {
+                    showMessage(languageConstants.general.messagePopup.getRecRuleData.fail);
+                    unlockScreen();
+                }
+            );
         });
         div.html(data[i].lbl);
         $("#recRulesBlock").find("#recRulesContainer").append(div);
@@ -198,7 +204,8 @@ function createAddRecRulePopup() {
     });
     $('p', addRecRulePopup).first().html(languageConstants.rec.addRecRulePopup.header);
     $('#recHistoryLinkContainer').find('a').html(languageConstants.rec.historyLinkLabel).click(function () {
-        showRecRuleHistory(addRecRulePopup.data('data').ruleId, function (result) {
+        RecBackendService.showRecRuleHistory(addRecRulePopup.data('ruleId'),
+            function (result) {
             initHistoryPopupElementsContainer(result.data);
             ruleHistoryPopup.dialog('open');
         });
@@ -382,6 +389,7 @@ function createAddRecRulePopupButtons() {
                     function (result) {
                         switch (recRuleCreationStatus) {
                             case recRuleCreationStatusConstants.add:
+                                ruleData.data.id = result.data;
                                 recRulesData.push(ruleData.data);
                                 break;
                             case recRuleCreationStatusConstants.update:
@@ -479,7 +487,7 @@ RecModel.prototype.getActiveRuleData = function () {
         recConditionsText: recConditionsData.text,
         trnExceptionsConditionsText: trnExceptionsConditionsData.text,
         evtExceptionsConditionsText: evtExceptionsConditionsData.text,
-        recConditionsSql: recConditionsData.sql,
+        recConditionsCode: recConditionsData.code,
         trnExceptionsConditionsSql: trnExceptionsConditionsData.sql,
         evtExceptionsConditionsSql: evtExceptionsConditionsData.sql,
         userComment: userComment,

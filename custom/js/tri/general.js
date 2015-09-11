@@ -424,18 +424,18 @@ function getConditionsData(rulesTable) {
 function getRecConditionsData(conditionsTable) {
     var conditionsArray = [];
     var conditionsText = '';
-    var conditionsSql = '';
+    var conditionsCode = '';
     $.each(conditionsTable.data('rules'), function (index, conditionLayoutElement) {
         var conditionData = getRecConditionData(conditionLayoutElement);
         conditionsArray.push($.extend({}, conditionData.web));
         if (index !== 0) {
             conditionsText += ' ';
-            conditionsSql += ' ';
+            conditionsCode += ' @ ';
         }
         conditionsText += conditionData.text;
-        conditionsSql += conditionData.sql;
+        conditionsCode += conditionData.code;
     });
-    return {web: JSON.stringify(conditionsArray), text: conditionsText, sql: conditionsSql, list: conditionsArray};
+    return {web: JSON.stringify(conditionsArray), text: conditionsText, code: conditionsCode, list: conditionsArray};
 }
 
 /**
@@ -491,12 +491,13 @@ function getRecConditionData(conditionLayoutElement) {
     text += operandSelectorData.lbl + ' ';
     text += evtPropertySelectorData.lbl + ' ';
     text += 'RW' + relativeWeightInputValue;
-    var sql = '';
-    sql += trnPropertySelectorData.name + ' ';
-    sql += operandSelectorData.name + ' ';
-    sql += evtPropertySelectorData.name + ' ';
-    sql += 'RW' + relativeWeightInputValue;
-    return {web: web, text: text, sql: sql};
+    var code = '';
+    code += trnPropertySelectorData.name + ' ';
+    code += operandSelectorData.name + ' ';
+    code += evtPropertySelectorData.name + ' ';
+    code += '# ';
+    code += relativeWeightInputValue;
+    return {web: web, text: text, code: code};
 }
 
 

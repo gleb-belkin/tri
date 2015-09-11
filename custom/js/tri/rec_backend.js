@@ -12,6 +12,7 @@ function RecBackendService() {
 //todo: add parameters and success callback
 RecBackendService.saveRule = function (ruleData, successCallback, failCallback) {
     lockScreen();
+    //todo: concat all three descriptions
     //var ruleData = getRuleData(ruleType);
     var requestData = ruleData.requestData;
     $.ajax({
@@ -28,7 +29,7 @@ RecBackendService.saveRule = function (ruleData, successCallback, failCallback) 
             rec_cnd_desc: requestData.recConditionsText,
             trn_ex_cnd_desc: requestData.trnExceptionsConditionsText,
             evt_ex_cnd_desc: requestData.evtExceptionsConditionsText,
-            rec_cnd_code: requestData.recConditionsSql,
+            rec_cnd_code: requestData.recConditionsCode,
             trn_ex_cnd_sql: requestData.trnExceptionsConditionsSql,
             evt_ex_cnd_sql: requestData.evtExceptionsConditionsSql,
             comment: requestData.userComment,
@@ -70,7 +71,57 @@ RecBackendService.removeRule = function (ruleId, successCallback, failCallback) 
         })
         .fail(function () {
             failCallback();
-            showMessage(languageConstants.general.messagePopup.removeRecRule.fail);
+        });
+}
+
+/**
+ * Requests rule history from the backend and displays it in the rule history popup.
+ */
+RecBackendService.showRecRule = function(ruleId, successCallback, failCallback) {
+    lockScreen();
+    $.ajax({
+        type: "POST",
+        url: backendUrl,
+        data: {tr_method: backendMethodConstants.getRecRuleData, dt_suf: backendLogId, rule_id:ruleId}
+    })
+        .done(function (getRecRuleDataResponse) {
+            var getRecRuleDataResult = performBaseResponseProcessing(getRecRuleDataResponse, backendMethodConstants.getRecRuleData);
+            if (getRecRuleDataResult === null) {
+                return;
+            }
+            successCallback(getRecRuleDataResult);
             unlockScreen();
+        })
+        .fail(function () {
+            failCallback();
+        });
+}
+
+/**
+ * Requests reconciliation rule history from the backend and displays it in the reconciliation rule history popup.
+ */
+RecBackendService.showRecRuleHistory = function(ruleId, successCallback) {
+    lockScreen();
+    $.ajax({
+        type: "POST",
+        url: backendUrl,
+        data: {
+            tr_method: backendMethodConstants.getRecRuleHistory,
+            dt_suf: backendLogId,
+            rule_id: ruleId
+        }
+    })
+        .done(function (getRecRuleHistoryResponse) {
+            var getRecRuleHistoryResult = performBaseResponseProcessing(getRecRuleHistoryResponse, backendMethodConstants.getRecRuleHistory);
+            if (getRecRuleHistoryResult === null) {
+                return;
+            }
+            successCallback(getRecRuleHistoryResult);
+            unlockScreen();
+        })
+        .fail(function (msg) {
+            showMessage(languageConstants.general.messagePopup.getRecRuleHistory.fail);
+            unlockScreen();
+            return;
         });
 }
