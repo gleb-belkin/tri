@@ -462,6 +462,7 @@ function updateConditionData(condition) {
     text += $('#operandButton button', condition).data('data').lbl;
     condition.data('text', $.trim(text));
     //condition.data('text', $.trim(condition.data('data').lbrl + $('#propertySelector option:selected', condition).data('data').lbl + ' ' + $('#operandSelector option:selected', condition).data('data').lbl + ' ' + condition.data('data').iv + condition.data('data').rbrl + ' ' + $('#operandButton button', condition).data('data').lbl));
+    //todo: substitute value with code for dimentional fields
     var sql = '';
     sql += condition.data('data').lbrl;
     sql += $('#propertySelector option:selected', condition).data('data').name + ' ';
@@ -491,6 +492,7 @@ function getRecConditionData(conditionLayoutElement) {
     text += operandSelectorData.lbl + ' ';
     text += evtPropertySelectorData.lbl + ' ';
     text += 'RW' + relativeWeightInputValue;
+    //todo: add 't' and 'e' prefixes
     var code = '';
     code += trnPropertySelectorData.name + ' ';
     code += operandSelectorData.name + ' ';
