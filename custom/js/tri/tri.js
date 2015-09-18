@@ -73,16 +73,7 @@ function rock() {
                                 return 1;
                             return 0;
                         });
-                    dropdownListItems = rulesDataResult.data.dropdownListItems;
-                    edcRulesData = rulesDataResult.data.edcRulesData;
-                    glaRule1Data = rulesDataResult.data.glaRule1Data;
-                    glaRule2Data = rulesDataResult.data.glaRule2Data;
-                    glaRule3Data = rulesDataResult.data.glaRule3Data;
-                    corrList = rulesDataResult.data.corrList;
-                    backendLogId = rulesDataResult.dt_suf;
-                    recRulesData = rulesDataResult.data.recRulesData;
-                    //todo parse real availableEvtFields from the server response
-                    availableEvtFields = rulesDataResult.data.availableTrnFields.sort(
+                    availableEvtFields = rulesDataResult.data.availableEvtFields.sort(
                         function (a, b) {
                             if (a.lbl < b.lbl)
                                 return -1;
@@ -90,6 +81,22 @@ function rock() {
                                 return 1;
                             return 0;
                         });
+                    trnDropdownListItems = rulesDataResult.data.trnDropdownListItems;
+                    var baseEvtDropdownListItems = rulesDataResult.data.evtDropdownListItems;
+                    var productDropdownListItems = rulesDataResult.data.productDropdownListItems;
+                    var riskCatDropdownListItems = rulesDataResult.data.riskCatDropdownListItems;
+                    var processDropdownListItems = rulesDataResult.data.processDropdownListItems;
+                    var rptDropdownListItems = rulesDataResult.data.rptDropdownListItems;
+                    var sourceSystemDropdownListItems = rulesDataResult.data.sourceSystemDropdownListItems;
+                    var currencyDropdownListItems = rulesDataResult.data.currencyDropdownListItems;
+                    evtDropdownListItems = $.merge($.merge($.merge($.merge($.merge($.merge($.merge([], baseEvtDropdownListItems), productDropdownListItems),riskCatDropdownListItems),processDropdownListItems),rptDropdownListItems),sourceSystemDropdownListItems),currencyDropdownListItems);
+                    edcRulesData = rulesDataResult.data.edcRulesData;
+                    glaRule1Data = rulesDataResult.data.glaRule1Data;
+                    glaRule2Data = rulesDataResult.data.glaRule2Data;
+                    glaRule3Data = rulesDataResult.data.glaRule3Data;
+                    corrList = rulesDataResult.data.corrList;
+                    backendLogId = rulesDataResult.dt_suf;
+                    recRulesData = rulesDataResult.data.recRulesData;
                     //loadUsedDropdownLists();
                     init();
                 },

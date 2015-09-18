@@ -287,8 +287,7 @@ function initAddRecRulePopup(recRuleData) {
     addRecRulePopup.data('data', recRuleData);
     addRecRulePopup.data('ruleId', recRuleData.id);
     //
-    var recConditionsTable = $('#addRecRulePopupRecConditions', addRecRulePopup).children().eq(1).children().first();
-    recConditionsTable.data('rules', []);
+    var recConditionsTable = initRulesTable($('#addRecRulePopupRecConditions', addRecRulePopup).children().eq(1).children().first(), conditionTypeConstants.rec);
     initAddConditionButton($("#addRecRulePopupRecConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.rec);
     for (var i = 0, max = recRuleData.cnds.length; i < max; i++) {
         addRecCondition(recConditionsTable, recRuleData.cnds[i]);
@@ -298,9 +297,8 @@ function initAddRecRulePopup(recRuleData) {
     var trnCheckbox = trnExceptionConditionsBlock.prev().find("input");
     trnCheckbox.prop('checked', recRuleData.trnExceptions.end === 1);
     trnCheckbox.trigger('change');
-    var trnExceptionTable = trnExceptionConditionsBlock.children().eq(1).children().first();
-    trnExceptionTable.data('rules', []);
-    initAddConditionButton($("#addRecRulePopupTrnExceptionConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.edc);
+    var trnExceptionTable = initRulesTable(trnExceptionConditionsBlock.children().eq(1).children().first());
+    initAddConditionButton($("#addRecRulePopupTrnExceptionConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.rec);
     for (var i = 0, max = recRuleData.trnExceptions.cnds.length; i < max; i++) {
         addCondition(trnExceptionTable, recRuleData.trnExceptions.cnds[i]);
     }
@@ -309,11 +307,10 @@ function initAddRecRulePopup(recRuleData) {
     var evtCheckbox = evtExceptionConditionsBlock.prev().find("input");
     evtCheckbox.prop('checked', recRuleData.evtExceptions.end === 1);
     evtCheckbox.trigger('change');
-    var evtExceptionTable = evtExceptionConditionsBlock.children().eq(1).children().first();
-    evtExceptionTable.data('rules', []);
-    initAddConditionButton($("#addRecRulePopupEvtExceptionConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.edc);
+    var evtExceptionTable = initRulesTable(evtExceptionConditionsBlock.children().eq(1).children().first(),conditionTypeConstants.evt);
+    initAddConditionButton($("#addRecRulePopupEvtExceptionConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.rec);
     for (var i = 0, max = recRuleData.evtExceptions.cnds.length; i < max; i++) {
-        addCondition(evtExceptionTable, recRuleData.evtExceptions.cnds[i]);
+        addCondition(evtExceptionTable, recRuleData.evtExceptions.cnds[i], conditionTypeConstants.evt);
     }
     //
     var matchLevelSettingBlock = $("#addRecRulePopupMatchLevelSettingsBlock");

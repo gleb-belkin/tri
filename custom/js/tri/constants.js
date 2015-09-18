@@ -3,6 +3,12 @@
  */
 
 
+var conditionTypeConstants = {
+    trn: 'transaction',
+    evt: 'event',
+    rec: 'reconciliation'
+}
+
 var languageConstants = {
     general: {
         pageTitle: 'AMA transaction rules interface',

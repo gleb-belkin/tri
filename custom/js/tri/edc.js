@@ -80,8 +80,7 @@ function initGeneralEdcInterface() {
  */
 function initAddEdcRulePopup(incidentTypeData) {
     resetAddEdcRulePopup(3);
-    var rulesTable = $('#rulesTable', addEdcRulePopup);
-    rulesTable.data('rules', []);
+    var rulesTable = initRulesTable($('#rulesTable', addEdcRulePopup));
     initAddConditionButton($("#addConditionButton", addEdcRulePopup), activeRuleProcessTypeConstants.edc);
     if (typeof incidentTypeData !== 'undefined') {
         updateRuleCreationStatus(incidentTypeData.sts);
@@ -475,18 +474,18 @@ function getRemoveRuleString() {
 /**
  * Comment
  */
-function initInputField(inputFieldContainer, fieldData, rule, useRuleValue) {
-    useRuleValue = defaultFor(useRuleValue, true);
-    var ruleData = rule.data('data');
+function initInputField(inputFieldContainer, fieldData, conditionContainer, conditionType, useConditionValue) {
+    useConditionValue = defaultFor(useConditionValue, true);
+    var conditionData = conditionContainer.data('data');
     inputFieldContainer.html('');
     var inputField;
     switch (fieldData.type) {
         case inputFieldTypeConstants.text:
             inputField = $('<input type="text">');
             inputFieldContainer.append(inputField);
-            if (typeof ruleData !== 'undefined' && useRuleValue) {
-                inputField.val(ruleData.iv);
-                if (ruleData.rdo === 1) {
+            if (typeof conditionData !== 'undefined' && useConditionValue) {
+                inputField.val(conditionData.iv);
+                if (conditionData.rdo === 1) {
                     inputField.prop('disabled', true);
                 }
             }
@@ -495,9 +494,9 @@ function initInputField(inputFieldContainer, fieldData, rule, useRuleValue) {
             inputField = $('<input type="text">');
             inputField.keydown(inputNumberFilter);
             inputFieldContainer.append(inputField);
-            if (typeof ruleData !== 'undefined' && useRuleValue) {
-                inputField.val(ruleData.iv);
-                if (ruleData.rdo === 1) {
+            if (typeof conditionData !== 'undefined' && useConditionValue) {
+                inputField.val(conditionData.iv);
+                if (conditionData.rdo === 1) {
                     inputField.prop('disabled', true);
                 }
             }
@@ -509,9 +508,9 @@ function initInputField(inputFieldContainer, fieldData, rule, useRuleValue) {
                 constrainInput: true,
                 dateFormat: "dd/mm/yy"
             });
-            if (typeof ruleData !== 'undefined' && useRuleValue) {
-                inputField.val(ruleData.iv);
-                if (ruleData.rdo === 1) {
+            if (typeof conditionData !== 'undefined' && useConditionValue) {
+                inputField.val(conditionData.iv);
+                if (conditionData.rdo === 1) {
                     inputField.prop('disabled', true);
                 }
             }
@@ -526,23 +525,32 @@ function initInputField(inputFieldContainer, fieldData, rule, useRuleValue) {
                     inputField.selectmenu("refresh");
                 }
             }).selectmenu("menuWidget").addClass("inputFieldOverflow");
-
+            var dropdownListItems = [];
+            switch (conditionType) {
+                case conditionTypeConstants.trn:
+                    dropdownListItems = trnDropdownListItems;
+                    break;
+                case conditionTypeConstants.evt:
+                    dropdownListItems = evtDropdownListItems;
+                    break;
+            }
             var dropdownElements = $.grep(dropdownListItems, function (element) {
                 return element.lid === fieldData.lid;
             });
+
             for (var i = 0; i < dropdownElements.length; i++) {
                 var option = $('<option>' + dropdownElements[i].lbl + '</option>');
                 option.data('data', dropdownElements[i]);
                 inputField.append(option);
             }
 
-            if (typeof ruleData !== 'undefined' && useRuleValue) {
-                if (typeof ruleData.ivid !== 'undefined') {
+            if (typeof conditionData !== 'undefined' && useConditionValue) {
+                if (typeof conditionData.ivid !== 'undefined') {
                     $('option', inputField).filter(function () {
-                        return $(this).data('data').id === ruleData.ivid;
+                        return $(this).data('data').id === conditionData.ivid;
                     }).attr('selected', true);
                 }
-                if (ruleData.rdo === 1) {
+                if (conditionData.rdo === 1) {
                     inputField.selectmenu('disable');
                 }
             }

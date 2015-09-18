@@ -8,11 +8,13 @@
 //lid = listId
 
 var availableTrnFields = [];
+var availableEvtFields = [];
 
 //lbl = label
 //lid = listId
 
-var dropdownListItems = [];
+var trnDropdownListItems = [];
+var evtDropdownListItems = [];
 
 //lbl = label
 
@@ -68,6 +70,7 @@ var initialConditionData = {fid: -1, oid: -1, iv: '', ivid: -1, loid: -1, lbrl: 
 var activeRuleProcessType, currentActiveAddRuleButton, addConditionMenu, addBracketMenu, currentActiveBracketButton, currentActiveBracketButtonSign, lockScreenPopup, messagePopup, ruleHistoryPopup, confirmActionPopup;
 
 var backendLogId = '';
+
 var activeRuleProcessTypeConstants = {
     edc: 'edc',
     gl1: 'gl1',
@@ -83,14 +86,6 @@ var traceOnce = 0;
  * Comment
  */
 function initGeneral() {
-    /*$.fn.center = function () {
-     this.css("position", "absolute");
-     this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
-     $(window).scrollTop()) + "px");
-     this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
-     $(window).scrollLeft()) + "px");
-     return this;
-     };*/
     $(document).prop('title', languageConstants.general.pageTitle);
     $('a[href*=\'processTabs-1\']').html(languageConstants.general.edcLabel);
     $('a[href*=\'processTabs-2\']').html(languageConstants.general.glaLabel);
@@ -430,6 +425,7 @@ function getRecConditionsData(conditionsTable) {
         conditionsArray.push($.extend({}, conditionData.web));
         if (index !== 0) {
             conditionsText += ' ';
+            //todo: move delimiter to constants
             conditionsCode += ' @ ';
         }
         conditionsText += conditionData.text;
@@ -492,11 +488,12 @@ function getRecConditionData(conditionLayoutElement) {
     text += operandSelectorData.lbl + ' ';
     text += evtPropertySelectorData.lbl + ' ';
     text += 'RW' + relativeWeightInputValue;
-    //todo: add 't' and 'e' prefixes
+    //todo: move prefixes to constants
     var code = '';
-    code += trnPropertySelectorData.name + ' ';
+    code += 't.' + trnPropertySelectorData.name + ' ';
     code += operandSelectorData.name + ' ';
-    code += evtPropertySelectorData.name + ' ';
+    code += 'e.' + evtPropertySelectorData.name + ' ';
+    //todo: move delimiter to constants
     code += '# ';
     code += relativeWeightInputValue;
     return {web: web, text: text, code: code};
@@ -549,18 +546,29 @@ function initLogicalOperandsMenu() {
     addConditionMenu = logicalOperandsMenuTemplate.menu({
         select: function (event, ui) {
             var rulesTable = $("#rulesTable", currentActiveAddRuleButton.parent().parent());
+            var conditionsType = rulesTable.data('type');
+            if (typeof conditionsType === 'undefined') {
+                return;
+            }
             switch (activeRuleProcessType) {
-
                 case activeRuleProcessTypeConstants.gl1:
-                    addCondition(rulesTable, initialConditionData, true);
+                    addCondition(rulesTable, initialConditionData, conditionsType, true);
                     break;
                 case activeRuleProcessTypeConstants.edc:
                 case activeRuleProcessTypeConstants.gl2:
                 case activeRuleProcessTypeConstants.gl3:
-                    addCondition(rulesTable, initialConditionData);
+                    addCondition(rulesTable);
                     break;
                 case activeRuleProcessTypeConstants.rec:
-                    addRecCondition(rulesTable, initialRecConditionData);
+                    switch (conditionsType) {
+                        case conditionTypeConstants.trn:
+                        case conditionTypeConstants.evt:
+                            addCondition(rulesTable);
+                            break;
+                        case conditionTypeConstants.rec:
+                            addRecCondition(rulesTable, initialRecConditionData);
+                            break;
+                    }
                     break;
             }
 
@@ -582,14 +590,16 @@ function initRuleLogicalOperandButton(rule, logicalOperandData) {
 /**
  * Comment
  */
-function addCondition(rulesTable, ruleData, considerAvl) {
-    ruleData = defaultFor(ruleData, initialConditionData);
+function addCondition(rulesTable, conditionData, conditionType, considerAvl) {
+    conditionData = defaultFor(conditionData, initialConditionData);
+    conditionType = defaultFor(conditionType, conditionTypeConstants.trn);
+    considerAvl = defaultFor(considerAvl, false);
     var rule = $("#ruleTemplate").find("tr").eq(0).clone();
-    rule.data('data', ruleData);
+    rule.data('data', conditionData);
     rule.hide();
     rulesTable.append(rule);
     rulesTable.data('rules').push(rule);
-    initCondition(rule, considerAvl);
+    initCondition(rule, conditionType, considerAvl);
     rule.show();
 }
 
@@ -612,30 +622,38 @@ function addRecCondition(rulesTable, ruleData, considerAvl) {
 /**
  * Comment
  */
-function initCondition(rule, considerAvl) {
-    considerAvl = defaultFor(considerAvl, false);
-    var ruleData = rule.data('data');
+function initCondition(conditionContainer, conditionType, considerAvl) {
+    var availableBusinessObjectFields = [];
+    switch (conditionType) {
+        case conditionTypeConstants.trn:
+            availableBusinessObjectFields = availableTrnFields;
+            break;
+        case conditionTypeConstants.evt:
+            availableBusinessObjectFields = availableEvtFields;
+            break;
+    }
+    var ruleData = conditionContainer.data('data');
     //init left to right
-    var inputFieldContainer = $('#inputField', rule);
+    var inputFieldContainer = $('#inputField', conditionContainer);
     //
     //
     //left bracket button
-    initBracketButton('#leftBracketButton', '(', rule);
+    initBracketButton('#leftBracketButton', '(', conditionContainer);
     //business object property selector
-    var fieldSelector = $('#propertySelector select', rule);
-    for (var i = 0; i < availableTrnFields.length; i++) {
-        if ((availableTrnFields[i].avl === 0 && considerAvl) && ruleData.rdo !== 1) {
+    var fieldSelector = $('#propertySelector select', conditionContainer);
+    for (var i = 0; i < availableBusinessObjectFields.length; i++) {
+        if ((availableBusinessObjectFields[i].avl === 0 && considerAvl) && ruleData.rdo !== 1) {
             continue;
         }
-        var option = $('<option>' + availableTrnFields[i].lbl + '</option>');
-        option.data('data', availableTrnFields[i]);
+        var option = $('<option>' + availableBusinessObjectFields[i].lbl + '</option>');
+        option.data('data', availableBusinessObjectFields[i]);
         fieldSelector.append(option);
     }
 
     fieldSelector.selectmenu({
         select: function (event, ui) {
-            initInputField(inputFieldContainer, ui.item.element.data('data'), rule, false);
-            initOperandSelector(ui.item.element.data('data'), rule);
+            initInputField(inputFieldContainer, ui.item.element.data('data'), conditionContainer, conditionType, false);
+            initOperandSelector(ui.item.element.data('data'), conditionContainer);
         },
         open: function () {
             fieldSelector.selectmenu("refresh");
@@ -651,11 +669,11 @@ function initCondition(rule, considerAvl) {
     }
     fieldSelector.selectmenu("refresh");
     //operand selector
-    initOperandSelector($('option:selected', fieldSelector).data('data'), rule);
+    initOperandSelector($('option:selected', fieldSelector).data('data'), conditionContainer);
     //input field
-    initInputField(inputFieldContainer, $('option:selected', fieldSelector).data('data'), rule);
+    initInputField(inputFieldContainer, $('option:selected', fieldSelector).data('data'), conditionContainer, conditionType);
     //right bracket button
-    initBracketButton('#rightBracketButton', ')', rule);
+    initBracketButton('#rightBracketButton', ')', conditionContainer);
     /*if (ruleData !== undefined) {
      rightBracketButton.button('option', 'label', ruleData.rbrl);
      if (ruleData.rdo === 1) {
@@ -663,7 +681,7 @@ function initCondition(rule, considerAvl) {
      }
      }*/
 //operand button
-    var operandButton = $('#operandButton button', rule);
+    var operandButton = $('#operandButton button', conditionContainer);
     operandButton.button().hide();
     operandButton.click(function (event) {
         //
@@ -672,7 +690,7 @@ function initCondition(rule, considerAvl) {
         initOperandButtonData(operandButton, ruleData.loid, ruleData.rdo, ruleData.rqr);
     }
 //remove button
-    var removeButton = $('#remove', rule);
+    var removeButton = $('#remove', conditionContainer);
     removeButton.button({
         label: languageConstants.templates.rulesTable.removeButtonLabel,
         icons: {
@@ -681,11 +699,11 @@ function initCondition(rule, considerAvl) {
         text: false
     });
     //remove button initialisation
-    var rulesTable = rule.parent().parent();
+    var rulesTable = conditionContainer.parent().parent();
     var rulesArray = rulesTable.data('rules');
     if (rulesArray.length > 1 && !(typeof ruleData !== 'undefined' && (ruleData.rdo === 1 || ruleData.rqr === 1))) {
         removeButton.click(function () {
-            var arrayIndex = $.inArray(rule, rulesArray);
+            var arrayIndex = $.inArray(conditionContainer, rulesArray);
             if (arrayIndex !== -1) {
                 if (arrayIndex === rulesArray.length - 1) {
                     $('#operandButton button', rulesArray[arrayIndex - 1]).button('option', 'label', emptyLogicalOperandData.lbl).data('data', emptyLogicalOperandData).hide();
@@ -693,7 +711,7 @@ function initCondition(rule, considerAvl) {
                     $('#operandButton button', rulesArray[arrayIndex - 1]).button('option', 'label', $('#operandButton button', rulesArray[arrayIndex]).data('data').lbl).data('data', $('#operandButton button', rulesArray[arrayIndex]).data('data'));
                 }
                 rulesArray.splice(arrayIndex, 1);
-                rule.remove();
+                conditionContainer.remove();
             }
         });
     } else {
@@ -1021,6 +1039,7 @@ function checkRuleFormat() {
             }
             break;
         case activeRuleProcessTypeConstants.rec:
+            //todo: check exceptions
             return checkRulesTableInputFormat($('#rulesTable', addRecRulePopup));
     }
     return inputIsValid;
@@ -1078,4 +1097,14 @@ function initFieldToValueConditionsBlock(conditionsBlock, conditionsBlockType) {
             $('#rulesTableInputValueHeader', conditionsBlock).html(languageConstants.templates.rulesTable.evtInputValueHeader);
             break;
     }
+}
+
+/**
+ * Comment
+ */
+function initRulesTable(rulesTable, conditionType) {
+    conditionType = defaultFor(conditionType, conditionTypeConstants.trn);
+    rulesTable.data('rules', []);
+    rulesTable.data('type', conditionType);
+    return rulesTable;
 }

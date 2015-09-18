@@ -200,8 +200,7 @@ function initBlock1GeneralExceptionConditionsBlock(blockData) {
     var exceptionBlock = $('#ruleBlock1GeneralExceptionConditionsBlock');
     initFieldToValueConditionsBlock(exceptionBlock,conditionsBlockConstants.trn);
     //exceptionBlock.html($('#conditionsBlockTemplate').html());
-    var exceptionRulesTable = exceptionBlock.find('#rulesTable');
-    exceptionRulesTable.data('rules', []);
+    var exceptionRulesTable = initRulesTable(exceptionBlock.find('#rulesTable'));
     initAddConditionButton(exceptionBlock.find("#addConditionButton"), activeRuleProcessTypeConstants.gl1);
     exceptionBlock.find("#controlCheckboxLabel").html(languageConstants.gla.rule1.generalExceptionControlCheckboxLabel);
     var checkbox = $("#ruleBlock1GeneralExceptionCheckboxContainer").find("input");
@@ -234,8 +233,7 @@ function addStationaryBlockToRule1Block(blockData, isLastOne) {
     ruleBlock1FormBlocks.append(div);
     initFieldToValueConditionsBlock($("#conditionsBlock", div),conditionsBlockConstants.trn);
     //$("#conditionsBlock", div).html($('#conditionsBlockTemplate').html());
-    var rulesTable = $('#rulesTable', div);
-    rulesTable.data('rules', []);
+    var rulesTable = initRulesTable($('#rulesTable', div));
     initAddConditionButton($("#addConditionButton", div), activeRuleProcessTypeConstants.gl1);
     initCheckbox($("#controlChecboxContainer input", div), $("#conditionsBlock", div));
     if (!isLastOne) {
@@ -249,7 +247,7 @@ function addStationaryBlockToRule1Block(blockData, isLastOne) {
         $("#controlChecboxContainer input", div).trigger('change');
         if (blockData.cnds.length !== 0) {
             for (var i = 0, max = blockData.cnds.length; i < max; i++) {
-                addCondition(rulesTable, blockData.cnds[i], true);
+                addCondition(rulesTable, blockData.cnds[i], conditionTypeConstants.trn, true);
             }
         } else {
             addCondition(rulesTable);
@@ -280,8 +278,7 @@ function initBlock2GeneralExceptionConditionsBlock(blockData) {
     var exceptionBlock = $("#ruleBlock2GeneralExceptionConditionsBlock");
     initFieldToValueConditionsBlock(exceptionBlock,conditionsBlockConstants.trn);
     //exceptionBlock.html($('#conditionsBlockTemplate').html());
-    var exceptionRulesTable = exceptionBlock.find('#rulesTable');
-    exceptionRulesTable.data('rules', []);
+    var exceptionRulesTable = initRulesTable(exceptionBlock.find('#rulesTable'));
     initAddConditionButton(exceptionBlock.find("#addConditionButton"), activeRuleProcessTypeConstants.gl2);
     var ruleBlock2GeneralExceptionCheckboxContainer = $("#ruleBlock2GeneralExceptionCheckboxContainer");
     ruleBlock2GeneralExceptionCheckboxContainer.find("#controlCheckboxLabel").html(languageConstants.gla.rule2.generalExceptionControlCheckboxLabel);
@@ -395,8 +392,7 @@ function addRule2CorrBlock(blockData, isFirstOne) {
     $("#corrBlockLabel", corrBlock).html(corrData.lbl);
     //$("#conditionsBlock", corrBlock).html($('#conditionsBlockTemplate').html());
     initFieldToValueConditionsBlock($("#conditionsBlock", corrBlock),conditionsBlockConstants.trn);
-    var rulesTable = $('#rulesTable', corrBlock);
-    rulesTable.data('rules', []);
+    var rulesTable = initRulesTable($('#rulesTable', corrBlock));
     initAddConditionButton($("#addConditionButton", corrBlock), activeRuleProcessTypeConstants.gl2);
     initCheckbox($("#controlChecboxContainer input", corrBlock), $("#conditionsBlock", corrBlock));
     //remove button
