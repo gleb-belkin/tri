@@ -334,8 +334,7 @@ function getRuleData(ruleType) {
     };
     return {
         data: ruleData,
-        requestData: requestData,
-        requestString: name + '#' + activeRuleProcessType + '#' + incidentTypeId + '#' + conditionsWeb + '#' + conditionsSql + '#' + conditionsText + '#' + userComment + '#' + type
+        requestData: requestData
     };
 }
 
@@ -563,7 +562,7 @@ function initLogicalOperandsMenu() {
                     switch (conditionsType) {
                         case conditionTypeConstants.trn:
                         case conditionTypeConstants.evt:
-                            addCondition(rulesTable);
+                            addCondition(rulesTable, initialConditionData, conditionsType, true);
                             break;
                         case conditionTypeConstants.rec:
                             addRecCondition(rulesTable, initialRecConditionData);

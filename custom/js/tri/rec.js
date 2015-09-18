@@ -300,7 +300,7 @@ function initAddRecRulePopup(recRuleData) {
     var trnExceptionTable = initRulesTable(trnExceptionConditionsBlock.children().eq(1).children().first());
     initAddConditionButton($("#addRecRulePopupTrnExceptionConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.rec);
     for (var i = 0, max = recRuleData.trnExceptions.cnds.length; i < max; i++) {
-        addCondition(trnExceptionTable, recRuleData.trnExceptions.cnds[i]);
+        addCondition(trnExceptionTable, recRuleData.trnExceptions.cnds[i], conditionTypeConstants.trn, true);
     }
     //
     var evtExceptionConditionsBlock = $("#addRecRulePopupEvtExceptionConditions", addRecRulePopup);
@@ -310,7 +310,7 @@ function initAddRecRulePopup(recRuleData) {
     var evtExceptionTable = initRulesTable(evtExceptionConditionsBlock.children().eq(1).children().first(),conditionTypeConstants.evt);
     initAddConditionButton($("#addRecRulePopupEvtExceptionConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.rec);
     for (var i = 0, max = recRuleData.evtExceptions.cnds.length; i < max; i++) {
-        addCondition(evtExceptionTable, recRuleData.evtExceptions.cnds[i], conditionTypeConstants.evt);
+        addCondition(evtExceptionTable, recRuleData.evtExceptions.cnds[i], conditionTypeConstants.evt, true);
     }
     //
     var matchLevelSettingBlock = $("#addRecRulePopupMatchLevelSettingsBlock");

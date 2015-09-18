@@ -45,16 +45,6 @@ function inputNumberFilter(e) {
     }
 }
 
-
-/**
- * Saves rule to server.
- * @param ruleString
- */
-function prepareRuleRequestString(ruleString) {
-    return '\'' + ruleString + encodeURI('#') + '\'';
-}
-
-
 /**
  * Locks screen.
  */

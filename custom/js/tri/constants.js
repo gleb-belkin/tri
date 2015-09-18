@@ -219,6 +219,7 @@ var inputFieldTypeConstants = {
     dropdown: 'dropdown'
 };
 
+//todo: replace with conditionTypeConstants
 var conditionsBlockConstants = {
     trn: 'trn',
     evt: 'evt'
