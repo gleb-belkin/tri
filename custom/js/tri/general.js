@@ -136,7 +136,7 @@ function initLogoutButton() {
             secondary: "ui-icon-close"
         }
     }).click(function () {
-        openConfirmActionPopup(languageConstants.general.confirmationPopup.general.logoutNote, false, true, "", logoutButtonClickHandler);
+        openConfirmActionPopup(languageConstants.general.confirmationPopup.general.logoutNote, false, false, "", logoutButtonClickHandler);
 
     }).focus(function () {
         this.blur();
@@ -296,7 +296,7 @@ function getRuleData(ruleType) {
             name = $("#ruleNameInputContainer").find("input").val();
             incidentTypeId = $('#incidentTypeSelector', addEdcRulePopup).data('data').id;
             conditionsData = getConditionsData($('#rulesTable', addEdcRulePopup));
-            ruleData = $.extend({}, initialEdcRuleData);
+            ruleData = $.extend(true, {}, initialEdcRuleData);
             ruleData.itid = incidentTypeId;
             ruleData.lbl = name;
             ruleData.cnds = conditionsData.list;
@@ -401,7 +401,7 @@ function getConditionsData(rulesTable) {
     var conditionsSql = '';
     $.each(rulesTable.data('rules'), function (index, rule) {
         updateConditionData(rule);
-        conditionsArray.push($.extend({}, rule.data('data')));
+        conditionsArray.push($.extend(true, {}, rule.data('data')));
         if (index !== 0) {
             conditionsText += ' ';
             conditionsSql += ' ';
@@ -421,7 +421,8 @@ function getRecConditionsData(conditionsTable) {
     var conditionsCode = '';
     $.each(conditionsTable.data('rules'), function (index, conditionLayoutElement) {
         var conditionData = getRecConditionData(conditionLayoutElement);
-        conditionsArray.push($.extend({}, conditionData.web));
+        //todo: $.merge was removed from the next line
+        conditionsArray.push(conditionData.web);
         if (index !== 0) {
             conditionsText += ' ';
             //todo: move delimiter to constants
@@ -477,7 +478,7 @@ function getRecConditionData(conditionLayoutElement) {
     var operandSelectorData = $('#operandSelector option:selected', conditionLayoutElement).data('data');
     var evtPropertySelectorData = $('#evtPropertySelector option:selected', conditionLayoutElement).data('data');
     var relativeWeightInputValue = $('#relativeWeight input', conditionLayoutElement).val();
-    var web = $.extend({}, initialRecConditionData);
+    var web = $.extend(true, {}, initialRecConditionData);
     web.tfid = trnPropertySelectorData.id;
     web.oid = operandSelectorData.id;
     web.efid = evtPropertySelectorData.id;
@@ -775,8 +776,7 @@ function initAddConditionButton(conditionButton, processType) {
  * Comment
  */
 function initBracketButton(buttonContainerIdWithHash, buttonLabel, rule) {
-    var button = $(buttonContainerIdWithHash + ' button', rule);
-    button.button();
+    var button = $(buttonContainerIdWithHash + ' button', rule).button();
     var ruleData = rule.data('data');
     if (typeof ruleData !== 'undefined') {
         switch (buttonContainerIdWithHash) {
@@ -793,9 +793,9 @@ function initBracketButton(buttonContainerIdWithHash, buttonLabel, rule) {
         }
     }
     button.click(function () {
-        currentActiveBracketButton = button;
+        currentActiveBracketButton = $(this);
         currentActiveBracketButtonSign = buttonLabel;
-        addBracketMenu.zIndex(addEdcRulePopup.zIndex() + 1);
+        addBracketMenu.zIndex($(this).zIndex() + 1);
         addBracketMenu.position({
             my: "left top",
             at: "left bottom",

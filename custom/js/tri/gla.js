@@ -335,14 +335,20 @@ function initAddCorrButon() {
  */
 function resetSelectCorrPopup() {
     availableCorrList = [];
+    traceObject(corrList);
+    trace("-----------");
+    traceObject(usedCorrElementsIds);
+    trace("-----------");
     for (var i = 0; i < corrList.length; i++) {
         var corrItemIsUsed = usedCorrElementsIds.some(function (element, index) {
-            return element === corrList[index].id;
+            return element === corrList[i].id;
         });
         if (!corrItemIsUsed) {
             availableCorrList.push(corrList[i]);
         }
     }
+    traceObject(availableCorrList);
+    trace("%%%%%%%%");
     initSelectCorrPopupObjectsContainer(availableCorrList);
 }
 
