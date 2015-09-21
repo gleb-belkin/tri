@@ -88,7 +88,7 @@ function initAddEdcRulePopup(incidentTypeData) {
         var ruleData = getRuleDataByIncidentTypeId(incidentTypeData.id);
         var popupTitle = '';
         if (typeof ruleData !== 'undefined') {
-            $('#ruleNameInputContainer').find('input').val(ruleData.lbl);
+            $('#edcRuleNameInputContainer').find('input').val(ruleData.lbl);
             popupTitle = languageConstants.edc.addEdcRulePopup.titleUpdate;
         } else {
             ruleData = initialEdcRuleData;
@@ -150,8 +150,8 @@ function resetAddEdcRulePopup(resetLevel) {
     if (resetLevel < 3) {
         return;
     }
-    $('#ruleNameInputContainer').find('input').val('');
-    initFieldToValueConditionsBlock($("#conditionsBlock", addEdcRulePopup),conditionsBlockConstants.trn);
+    $('#edcRuleNameInputContainer').find('input').val('');
+    initFieldToValueConditionsBlock($("#conditionsBlock", addEdcRulePopup), conditionsBlockConstants.trn);
     //$("#conditionsBlock", addEdcRulePopup).html($('#conditionsBlockTemplate').html());
 }
 /**
@@ -558,5 +558,19 @@ function initInputField(inputFieldContainer, fieldData, conditionContainer, cond
             break;
         default :
             return;
+    }
+
+
+}
+
+/**
+ * Generates parameters string for the backend 'remove_rule' method.
+ */
+function removeActiveEdcRule() {
+    for (var i = 0, max = edcRulesData.length; i < max; i++) {
+        if (edcRulesData[i].itid === $('#incidentTypeSelector', addEdcRulePopup).data('data').id) {
+            edcRulesData.splice(i, 1);
+            break;
+        }
     }
 }

@@ -206,9 +206,9 @@ function createAddRecRulePopup() {
     $('#recHistoryLinkContainer').find('a').html(languageConstants.rec.historyLinkLabel).click(function () {
         RecBackendService.showRecRuleHistory(addRecRulePopup.data('ruleId'),
             function (result) {
-            initHistoryPopupElementsContainer(result.data);
-            ruleHistoryPopup.dialog('open');
-        });
+                initHistoryPopupElementsContainer(result.data);
+                ruleHistoryPopup.dialog('open');
+            });
     });
 //
     var recConditionsBlock = $("#addRecRulePopupRecConditions", addRecRulePopup);
@@ -216,18 +216,32 @@ function createAddRecRulePopup() {
     recConditionsBlock.html($('#recConditionsBlockTemplate').html());
     recConditionsBlock.prev().children().first().hide();
     recConditionsBlock.prev().children().eq(1).html(languageConstants.rec.addRecRulePopup.recRulesSectionHeader);
-//
+    $("#addRecRulePopupRecConditions #addConditionButton", addRecRulePopup).button({
+        label: languageConstants.templates.rulesTable.addConditionButtonLabel,
+        icons: {
+            primary: "ui-icon-plus"
+        }
+    }).click(function () {
+        activeRuleProcessType = activeRuleProcessTypeConstants.rec;
+        currentActiveAddRuleButton = $(this);
+        var rulesTable = $("#rulesTable", currentActiveAddRuleButton.parent().parent());
+        addRecCondition(rulesTable, initialRecConditionData);
+        return false;
+    });
+    //
     var trnExceptionConditionsBlock = $("#addRecRulePopupTrnExceptionConditions", addRecRulePopup);
     trnExceptionConditionsBlock.parent().prepend($($("#controlCheckboxBlockTemplate").html()));
     initFieldToValueConditionsBlock(trnExceptionConditionsBlock, conditionsBlockConstants.trn);
     trnExceptionConditionsBlock.prev().children().eq(1).html(languageConstants.rec.addRecRulePopup.trnExceptionSectionHeader);
     initCheckbox(trnExceptionConditionsBlock.prev().find("input"), trnExceptionConditionsBlock);
-//
+    initAddConditionButton($("#addConditionButton", trnExceptionConditionsBlock), activeRuleProcessTypeConstants.rec);
+    //
     var evtExceptionConditionsBlock = $("#addRecRulePopupEvtExceptionConditions", addRecRulePopup);
     evtExceptionConditionsBlock.parent().prepend($($("#controlCheckboxBlockTemplate").html()));
     initFieldToValueConditionsBlock(evtExceptionConditionsBlock, conditionsBlockConstants.evt);
     evtExceptionConditionsBlock.prev().children().eq(1).html(languageConstants.rec.addRecRulePopup.evtExceptionSectionHeader);
     initCheckbox(evtExceptionConditionsBlock.prev().find("input"), evtExceptionConditionsBlock);
+    initAddConditionButton($("#addConditionButton", evtExceptionConditionsBlock), activeRuleProcessTypeConstants.rec);
     //
     var matchLevelSettingBlock = $("#addRecRulePopupMatchLevelSettingsBlock");
     matchLevelSettingBlock.children().first().children().first().html(languageConstants.rec.addRecRulePopup.matchLevelSettingsBlockEtlFromLabel);
@@ -288,7 +302,6 @@ function initAddRecRulePopup(recRuleData) {
     addRecRulePopup.data('ruleId', recRuleData.id);
     //
     var recConditionsTable = initRulesTable($('#addRecRulePopupRecConditions', addRecRulePopup).children().eq(1).children().first(), conditionTypeConstants.rec);
-    initAddConditionButton($("#addRecRulePopupRecConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.rec);
     for (var i = 0, max = recRuleData.cnds.length; i < max; i++) {
         addRecCondition(recConditionsTable, recRuleData.cnds[i]);
     }
@@ -298,7 +311,6 @@ function initAddRecRulePopup(recRuleData) {
     trnCheckbox.prop('checked', recRuleData.trnExceptions.end === 1);
     trnCheckbox.trigger('change');
     var trnExceptionTable = initRulesTable(trnExceptionConditionsBlock.children().eq(1).children().first());
-    initAddConditionButton($("#addRecRulePopupTrnExceptionConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.rec);
     for (var i = 0, max = recRuleData.trnExceptions.cnds.length; i < max; i++) {
         addCondition(trnExceptionTable, recRuleData.trnExceptions.cnds[i], conditionTypeConstants.trn, true);
     }
@@ -307,8 +319,7 @@ function initAddRecRulePopup(recRuleData) {
     var evtCheckbox = evtExceptionConditionsBlock.prev().find("input");
     evtCheckbox.prop('checked', recRuleData.evtExceptions.end === 1);
     evtCheckbox.trigger('change');
-    var evtExceptionTable = initRulesTable(evtExceptionConditionsBlock.children().eq(1).children().first(),conditionTypeConstants.evt);
-    initAddConditionButton($("#addRecRulePopupEvtExceptionConditions #addConditionButton", addRecRulePopup), activeRuleProcessTypeConstants.rec);
+    var evtExceptionTable = initRulesTable(evtExceptionConditionsBlock.children().eq(1).children().first(), conditionTypeConstants.evt);
     for (var i = 0, max = recRuleData.evtExceptions.cnds.length; i < max; i++) {
         addCondition(evtExceptionTable, recRuleData.evtExceptions.cnds[i], conditionTypeConstants.evt, true);
     }

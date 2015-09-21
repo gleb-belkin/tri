@@ -293,7 +293,7 @@ function getRuleData(ruleType) {
     var ruleData;
     switch (activeRuleProcessType) {
         case activeRuleProcessTypeConstants.edc:
-            name = $("#ruleNameInputContainer").find("input").val();
+            name = $("#edcRuleNameInputContainer").find("input").val();
             incidentTypeId = $('#incidentTypeSelector', addEdcRulePopup).data('data').id;
             conditionsData = getConditionsData($('#rulesTable', addEdcRulePopup));
             ruleData = $.extend(true, {}, initialEdcRuleData);
@@ -565,9 +565,9 @@ function initLogicalOperandsMenu() {
                         case conditionTypeConstants.evt:
                             addCondition(rulesTable, initialConditionData, conditionsType, true);
                             break;
-                        case conditionTypeConstants.rec:
+                       /* case conditionTypeConstants.rec:
                             addRecCondition(rulesTable, initialRecConditionData);
-                            break;
+                            break;*/
                     }
                     break;
             }
