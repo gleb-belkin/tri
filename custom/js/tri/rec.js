@@ -19,12 +19,12 @@ var initialRecRuleData = {
     ],
     "trnExceptions": {
         "end": 0, "cnds": [
-            {"fid": 1, "oid": 5, "iv": "123", "ivid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rdo": 0, "rqr": 0}
+            {"fid": 1, "oid": 5, "iv": "", "ivid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rdo": 0, "rqr": 0}
         ]
     },
     "evtExceptions": {
         "end": 0, "cnds": [
-            {"fid": 1, "oid": 5, "iv": "123", "ivid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rdo": 0, "rqr": 0}
+            {"fid": 1, "oid": 5, "iv": "", "ivid": 1, "loid": -1, "lbrl": "", "rbrl": "", "rdo": 0, "rqr": 0}
         ]
     },
     "etl_from": "10",
@@ -64,6 +64,8 @@ function initGeneralRecInterface() {
     }).click(function (e) {
         recRuleCreationStatus = recRuleCreationStatusConstants.add;
         initAddRecRulePopup();
+    }).focus(function () {
+        this.blur();
     });
     var recRulesSearchBlock = $("#recRulesSearchBlock");
     recRulesSearchBlock.prepend($("<div></div>").html(languageConstants.rec.rulesSearchBlockLabel));

@@ -441,8 +441,8 @@ function updateConditionData(condition) {
     condition.data('data').fid = $('#propertySelector option:selected', condition).data('data').id;
     condition.data('data').oid = $('#operandSelector option:selected', condition).data('data').id;
     var fieldType = $('#propertySelector option:selected', condition).data('data').type;
-    var sqlStringPrefix = condition.data('data').oid === 11 || condition.data('data').oid === 12 ? '%' : '';
-    var sqlStringSuffix = condition.data('data').oid === 9 || condition.data('data').oid === 10 ? '%' : '';
+    var sqlStringPrefix = condition.data('data').oid === 7 || condition.data('data').oid === 8 || condition.data('data').oid === 11 || condition.data('data').oid === 12 ? '%' : '';
+    var sqlStringSuffix = condition.data('data').oid === 7 || condition.data('data').oid === 8 || condition.data('data').oid === 9 || condition.data('data').oid === 10 ? '%' : '';
     var fieldValue = getInputFieldValue($('#inputField', condition), fieldType, sqlStringPrefix, sqlStringSuffix);
     condition.data('data').iv = fieldValue.inputValue;
     condition.data('data').ivid = fieldValue.inputValueId;
@@ -457,7 +457,6 @@ function updateConditionData(condition) {
     text += condition.data('data').rbrl + ' ';
     text += $('#operandButton button', condition).data('data').lbl;
     condition.data('text', $.trim(text));
-    //condition.data('text', $.trim(condition.data('data').lbrl + $('#propertySelector option:selected', condition).data('data').lbl + ' ' + $('#operandSelector option:selected', condition).data('data').lbl + ' ' + condition.data('data').iv + condition.data('data').rbrl + ' ' + $('#operandButton button', condition).data('data').lbl));
     //todo: substitute value with code for dimentional fields
     var sql = '';
     sql += condition.data('data').lbrl;
@@ -467,7 +466,6 @@ function updateConditionData(condition) {
     sql += condition.data('data').rbrl + ' ';
     sql += $('#operandButton button', condition).data('data').name;
     condition.data('sql', $.trim(sql));
-    //condition.data('sql', $.trim(condition.data('data').lbrl + $('#propertySelector option:selected', condition).data('data').name + ' ' + $('#operandSelector option:selected', condition).data('data').name + ' ' + fieldValue.sqlValue + condition.data('data').rbrl + ' ' + $('#operandButton button', condition).data('data').name));
 }
 
 /**
@@ -594,13 +592,13 @@ function addCondition(rulesTable, conditionData, conditionType, considerAvl) {
     conditionData = defaultFor(conditionData, initialConditionData);
     conditionType = defaultFor(conditionType, conditionTypeConstants.trn);
     considerAvl = defaultFor(considerAvl, false);
-    var rule = $("#ruleTemplate").find("tr").eq(0).clone();
-    rule.data('data', conditionData);
-    rule.hide();
-    rulesTable.append(rule);
-    rulesTable.data('rules').push(rule);
-    initCondition(rule, conditionType, considerAvl);
-    rule.show();
+    var conditionContainer = $("#ruleTemplate").find("tr").eq(0).clone();
+    conditionContainer.data('data', conditionData);
+    conditionContainer.hide();
+    rulesTable.append(conditionContainer);
+    rulesTable.data('rules').push(conditionContainer);
+    initCondition(conditionContainer, conditionType, considerAvl);
+    conditionContainer.show();
 }
 
 
